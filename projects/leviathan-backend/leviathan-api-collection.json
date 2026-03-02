@@ -1,0 +1,187 @@
+{
+  "info": {
+    "name": "Leviathan Blockchain API",
+    "description": "API collection for Leviathan Blockchain Network",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Generate Wallet",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/wallet/generate"
+          }
+        },
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/wallet/balance/:address"
+          }
+        },
+        {
+          "name": "Verify Mnemonic",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/wallet/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Token",
+      "item": [
+        {
+          "name": "Create Token (ASA)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/token/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"name\": \"Leviathan Coin\",\n  \"unitName\": \"LEVI\",\n  \"total\": 1000000,\n  \"decimals\": 6,\n  \"url\": \"https://leviathancoin.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Transfer Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/token/transfer",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"assetId\": 123456,\n  \"to\": \"RECIPIENT_ADDRESS\",\n  \"amount\": 1000\n}"
+            }
+          }
+        },
+        {
+          "name": "Opt-in to Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/token/optin",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"assetId\": 123456\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Token Info",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/token/info/:assetId"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NFT",
+      "item": [
+        {
+          "name": "Create NFT",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/nft/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"name\": \"Leviathan NFT #1\",\n  \"unitName\": \"LEVI\",\n  \"url\": \"https://leviathancoin.com/nft/1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Transfer NFT",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/nft/transfer",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"assetId\": 123456,\n  \"to\": \"RECIPIENT_ADDRESS\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get NFT Info",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/nft/info/:assetId"
+          }
+        },
+        {
+          "name": "Get Owned NFTs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/nft/owned/:address"
+          }
+        },
+        {
+          "name": "Opt-in to NFT",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/nft/optin",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"assetId\": 123456\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mining",
+      "item": [
+        {
+          "name": "Mine Tokens",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/mining/mine",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mnemonic\": \"your 25 word mnemonic here\",\n  \"appId\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Mining Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/mining/stats"
+          }
+        },
+        {
+          "name": "Get Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/mining/leaderboard"
+          }
+        },
+        {
+          "name": "Get Difficulty",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/mining/difficulty"
+          }
+        }
+      ]
+    }
+  ]
+}

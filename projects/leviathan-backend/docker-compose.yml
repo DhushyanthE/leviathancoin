@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Leviathan Backend API
+  backend:
+    build: .
+    container_name: leviathan-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - NETWORK=localnet
+      - PORT=3001
+    volumes:
+      - ./.env:/app/.env
+    restart: unless-stopped
+
+  # Algorand LocalNet (for development)
+  algorand:
+    image: algorand/stable
+    container_name: leviathan-algorand
+    ports:
+      - "4001:4001"
+      - "4002:4002"
+      - "9392:9392"
+    environment:
+      - NETWORK=localnet
+      - FAST_CATCHUP=true
+      - GOSSIP_PORT=4001
+      - REST_PORT=4002
+      - INDEXER_PORT=9392
+    volumes:
+      - algorand_data:/data
+    restart: unless-stopped
+
+  # PostgreSQL for data persistence (optional)
+  postgres:
+    image: postgres:15-alpine
+    container_name: leviathan-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=leviathan
+      - POSTGRES_PASSWORD=leviathan
+      - POSTGRES_DB=leviathan
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  algorand_data:
+  postgres_data:

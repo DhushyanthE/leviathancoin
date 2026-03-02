@@ -1,0 +1,1644 @@
+{
+  "version": 3,
+  "sources": [
+    "../contract.py"
+  ],
+  "mappings": ";;;;;;;AAIA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;AAAA;;;;;;;;;AASK;;;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAUG;AACU;;AAAA;AAME;;AACA;;;;;;;;;;AAFO;;;;;;;;;;;;AAJN;;;;;;AAFb;;;AAAA;;;AAAA;AAVH;AAAA;AAuBA;;;AAAA;AAAA;;AAAA;AAAA;AAAA;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AASA;;;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AASY;AAOG;;AACA;;;;;;;;;;AAFO;;;;;;;AAHL;;;;;;;;AADD;;;AADH;;;AADD;;;AAAA;;;AAAA;;;AAiBT;AAGiB;;;;;;;;;AAHjB;;;;AAAA;;;AAAA;AAMO;AAhCV;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "algopy.arc4.ARC4Contract.approval_program",
+      "params": {},
+      "block": "main",
+      "stack_in": [],
+      "op": "intcblock 0 2 1 3"
+    },
+    "7": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "9": {
+      "op": "bz main___algopy_default_create@10",
+      "stack_out": []
+    },
+    "12": {
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "14": {
+      "op": "!",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "15": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "16": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "18": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "19": {
+      "op": "pushbytess 0x1265c841 0x43cb07a0 0x04167581 // method \"create_token(uint64,string,string,string)void\", method \"mine(address)uint64\", method \"mint_nft(address,string,string)uint64\"",
+      "defined_out": [
+        "Method(create_token(uint64,string,string,string)void)",
+        "Method(mine(address)uint64)",
+        "Method(mint_nft(address,string,string)uint64)"
+      ],
+      "stack_out": [
+        "Method(create_token(uint64,string,string,string)void)",
+        "Method(mine(address)uint64)",
+        "Method(mint_nft(address,string,string)uint64)"
+      ]
+    },
+    "36": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(create_token(uint64,string,string,string)void)",
+        "Method(mine(address)uint64)",
+        "Method(mint_nft(address,string,string)uint64)",
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "Method(create_token(uint64,string,string,string)void)",
+        "Method(mine(address)uint64)",
+        "Method(mint_nft(address,string,string)uint64)",
+        "tmp%6#0"
+      ]
+    },
+    "39": {
+      "op": "match create_token mine mint_nft",
+      "stack_out": []
+    },
+    "47": {
+      "op": "err"
+    },
+    "48": {
+      "block": "main___algopy_default_create@10",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "50": {
+      "op": "!",
+      "defined_out": [
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0"
+      ]
+    },
+    "51": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ]
+    },
+    "53": {
+      "op": "!",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%10#0"
+      ]
+    },
+    "54": {
+      "op": "&&",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "55": {
+      "op": "return",
+      "defined_out": [],
+      "stack_out": []
+    },
+    "56": {
+      "subroutine": "smart_contracts.leviathan_token.contract.LeviathanToken.create_token[routing]",
+      "params": {},
+      "block": "create_token",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "max_supply#0"
+      ],
+      "stack_out": [
+        "max_supply#0"
+      ]
+    },
+    "59": {
+      "op": "dup",
+      "defined_out": [
+        "max_supply#0",
+        "max_supply#0 (copy)"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "max_supply#0 (copy)"
+      ]
+    },
+    "60": {
+      "op": "len",
+      "defined_out": [
+        "len%0#0",
+        "max_supply#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "len%0#0"
+      ]
+    },
+    "61": {
+      "op": "pushint 8",
+      "defined_out": [
+        "8",
+        "len%0#0",
+        "max_supply#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "len%0#0",
+        "8"
+      ]
+    },
+    "63": {
+      "op": "==",
+      "defined_out": [
+        "eq%0#0",
+        "max_supply#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "eq%0#0"
+      ]
+    },
+    "64": {
+      "error": "invalid number of bytes for arc4.uint64",
+      "op": "assert // invalid number of bytes for arc4.uint64",
+      "stack_out": [
+        "max_supply#0"
+      ]
+    },
+    "65": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0"
+      ]
+    },
+    "68": {
+      "op": "dup",
+      "defined_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ]
+    },
+    "69": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "max_supply#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)",
+        "0"
+      ]
+    },
+    "70": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%0#0",
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "71": {
+      "op": "intc_1 // 2",
+      "defined_out": [
+        "2",
+        "aggregate%array_length%0#0",
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "aggregate%array_length%0#0",
+        "2"
+      ]
+    },
+    "72": {
+      "op": "+",
+      "defined_out": [
+        "add%0#0",
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "add%0#0"
+      ]
+    },
+    "73": {
+      "op": "dig 1",
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "add%0#0",
+        "tmp%1#0 (copy)"
+      ]
+    },
+    "75": {
+      "op": "len",
+      "defined_out": [
+        "add%0#0",
+        "len%1#0",
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "add%0#0",
+        "len%1#0"
+      ]
+    },
+    "76": {
+      "op": "==",
+      "defined_out": [
+        "eq%1#0",
+        "max_supply#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0",
+        "eq%1#0"
+      ]
+    },
+    "77": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "max_supply#0",
+        "tmp%1#0"
+      ]
+    },
+    "78": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "max_supply#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0"
+      ]
+    },
+    "81": {
+      "op": "txna ApplicationArgs 3",
+      "defined_out": [
+        "max_supply#0",
+        "tmp%3#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0"
+      ]
+    },
+    "84": {
+      "op": "dup",
+      "defined_out": [
+        "max_supply#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)"
+      ]
+    },
+    "85": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)",
+        "0"
+      ]
+    },
+    "86": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%1#0",
+        "max_supply#0",
+        "tmp%3#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "aggregate%array_length%1#0"
+      ]
+    },
+    "87": {
+      "op": "intc_1 // 2",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "aggregate%array_length%1#0",
+        "2"
+      ]
+    },
+    "88": {
+      "op": "+",
+      "defined_out": [
+        "add%1#0",
+        "max_supply#0",
+        "tmp%3#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "add%1#0"
+      ]
+    },
+    "89": {
+      "op": "dig 1",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "add%1#0",
+        "tmp%3#0 (copy)"
+      ]
+    },
+    "91": {
+      "op": "len",
+      "defined_out": [
+        "add%1#0",
+        "len%2#0",
+        "max_supply#0",
+        "tmp%3#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "add%1#0",
+        "len%2#0"
+      ]
+    },
+    "92": {
+      "op": "==",
+      "defined_out": [
+        "eq%2#0",
+        "max_supply#0",
+        "tmp%3#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0",
+        "eq%2#0"
+      ]
+    },
+    "93": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "tmp%3#0"
+      ]
+    },
+    "94": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "asset_name#0",
+        "max_supply#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0"
+      ]
+    },
+    "97": {
+      "op": "txna ApplicationArgs 4",
+      "defined_out": [
+        "asset_name#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0"
+      ]
+    },
+    "100": {
+      "op": "dup",
+      "defined_out": [
+        "asset_name#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "tmp%5#0 (copy)",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "tmp%5#0 (copy)"
+      ]
+    },
+    "101": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "tmp%5#0 (copy)",
+        "0"
+      ]
+    },
+    "102": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%2#0",
+        "asset_name#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "aggregate%array_length%2#0"
+      ]
+    },
+    "103": {
+      "op": "intc_1 // 2",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "aggregate%array_length%2#0",
+        "2"
+      ]
+    },
+    "104": {
+      "op": "+",
+      "defined_out": [
+        "add%2#0",
+        "asset_name#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "add%2#0"
+      ]
+    },
+    "105": {
+      "op": "dig 1",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "add%2#0",
+        "tmp%5#0 (copy)"
+      ]
+    },
+    "107": {
+      "op": "len",
+      "defined_out": [
+        "add%2#0",
+        "asset_name#0",
+        "len%3#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "add%2#0",
+        "len%3#0"
+      ]
+    },
+    "108": {
+      "op": "==",
+      "defined_out": [
+        "asset_name#0",
+        "eq%3#0",
+        "max_supply#0",
+        "tmp%5#0",
+        "unit_name#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0",
+        "eq%3#0"
+      ]
+    },
+    "109": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "tmp%5#0"
+      ]
+    },
+    "110": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "asset_name#0",
+        "max_supply#0",
+        "unit_name#0",
+        "url#0"
+      ],
+      "stack_out": [
+        "max_supply#0",
+        "unit_name#0",
+        "asset_name#0",
+        "url#0"
+      ]
+    },
+    "113": {
+      "op": "itxn_begin"
+    },
+    "114": {
+      "op": "uncover 3",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "max_supply#0"
+      ]
+    },
+    "116": {
+      "op": "btoi",
+      "defined_out": [
+        "asset_name#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "unit_name#0",
+        "url#0"
+      ],
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "117": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "asset_name#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "unit_name#0",
+        "url#0"
+      ],
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0"
+      ]
+    },
+    "119": {
+      "op": "dupn 3",
+      "defined_out": [
+        "asset_name#0",
+        "inner_txn_params%0%%param_ConfigAssetClawback_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "unit_name#0",
+        "url#0"
+      ],
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetClawback_idx_0#0"
+      ]
+    },
+    "121": {
+      "op": "itxn_field ConfigAssetClawback",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0"
+      ]
+    },
+    "123": {
+      "op": "itxn_field ConfigAssetFreeze",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0"
+      ]
+    },
+    "125": {
+      "op": "itxn_field ConfigAssetReserve",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0"
+      ]
+    },
+    "127": {
+      "op": "itxn_field ConfigAssetManager",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "129": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "0"
+      ]
+    },
+    "130": {
+      "op": "itxn_field ConfigAssetDefaultFrozen",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "url#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "132": {
+      "op": "swap",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "url#0"
+      ]
+    },
+    "133": {
+      "op": "itxn_field ConfigAssetURL",
+      "stack_out": [
+        "unit_name#0",
+        "asset_name#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "135": {
+      "op": "swap",
+      "stack_out": [
+        "unit_name#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "asset_name#0"
+      ]
+    },
+    "136": {
+      "op": "itxn_field ConfigAssetName",
+      "stack_out": [
+        "unit_name#0",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "138": {
+      "op": "swap",
+      "stack_out": [
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "unit_name#0"
+      ]
+    },
+    "139": {
+      "op": "itxn_field ConfigAssetUnitName",
+      "stack_out": [
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "141": {
+      "op": "pushint 6",
+      "defined_out": [
+        "6",
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ],
+      "stack_out": [
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0",
+        "6"
+      ]
+    },
+    "143": {
+      "op": "itxn_field ConfigAssetDecimals",
+      "stack_out": [
+        "inner_txn_params%0%%param_ConfigAssetTotal_idx_0#0"
+      ]
+    },
+    "145": {
+      "op": "itxn_field ConfigAssetTotal",
+      "stack_out": []
+    },
+    "147": {
+      "op": "intc_3 // acfg",
+      "defined_out": [
+        "acfg"
+      ],
+      "stack_out": [
+        "acfg"
+      ]
+    },
+    "148": {
+      "op": "itxn_field TypeEnum",
+      "stack_out": []
+    },
+    "150": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "0"
+      ]
+    },
+    "151": {
+      "op": "itxn_field Fee",
+      "stack_out": []
+    },
+    "153": {
+      "op": "itxn_submit"
+    },
+    "154": {
+      "op": "intc_2 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "155": {
+      "op": "return",
+      "stack_out": []
+    },
+    "156": {
+      "subroutine": "smart_contracts.leviathan_token.contract.LeviathanToken.mine[routing]",
+      "params": {},
+      "block": "mine",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "miner#0"
+      ],
+      "stack_out": [
+        "miner#0"
+      ]
+    },
+    "159": {
+      "op": "len",
+      "defined_out": [
+        "len%0#0"
+      ],
+      "stack_out": [
+        "len%0#0"
+      ]
+    },
+    "160": {
+      "op": "pushint 32",
+      "defined_out": [
+        "32",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "len%0#0",
+        "32"
+      ]
+    },
+    "162": {
+      "op": "==",
+      "defined_out": [
+        "eq%0#0"
+      ],
+      "stack_out": [
+        "eq%0#0"
+      ]
+    },
+    "163": {
+      "error": "invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "op": "assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "stack_out": []
+    },
+    "164": {
+      "op": "pushbytes 0x151f7c7500000000000f4240",
+      "defined_out": [
+        "0x151f7c7500000000000f4240"
+      ],
+      "stack_out": [
+        "0x151f7c7500000000000f4240"
+      ]
+    },
+    "178": {
+      "op": "log",
+      "stack_out": []
+    },
+    "179": {
+      "op": "intc_2 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "180": {
+      "op": "return",
+      "stack_out": []
+    },
+    "181": {
+      "subroutine": "smart_contracts.leviathan_token.contract.LeviathanToken.mint_nft[routing]",
+      "params": {},
+      "block": "mint_nft",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "184": {
+      "op": "dup",
+      "defined_out": [
+        "minter#0",
+        "minter#0 (copy)"
+      ],
+      "stack_out": [
+        "minter#0",
+        "minter#0 (copy)"
+      ]
+    },
+    "185": {
+      "op": "len",
+      "defined_out": [
+        "len%0#0",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "len%0#0"
+      ]
+    },
+    "186": {
+      "op": "pushint 32",
+      "defined_out": [
+        "32",
+        "len%0#0",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "len%0#0",
+        "32"
+      ]
+    },
+    "188": {
+      "op": "==",
+      "defined_out": [
+        "eq%0#0",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "eq%0#0"
+      ]
+    },
+    "189": {
+      "error": "invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "op": "assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "190": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0"
+      ]
+    },
+    "193": {
+      "op": "dup",
+      "defined_out": [
+        "minter#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ]
+    },
+    "194": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "minter#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "tmp%1#0 (copy)",
+        "0"
+      ]
+    },
+    "195": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%0#0",
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "196": {
+      "op": "intc_1 // 2",
+      "defined_out": [
+        "2",
+        "aggregate%array_length%0#0",
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "aggregate%array_length%0#0",
+        "2"
+      ]
+    },
+    "197": {
+      "op": "+",
+      "defined_out": [
+        "add%0#0",
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "add%0#0"
+      ]
+    },
+    "198": {
+      "op": "dig 1",
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "add%0#0",
+        "tmp%1#0 (copy)"
+      ]
+    },
+    "200": {
+      "op": "len",
+      "defined_out": [
+        "add%0#0",
+        "len%1#0",
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "add%0#0",
+        "len%1#0"
+      ]
+    },
+    "201": {
+      "op": "==",
+      "defined_out": [
+        "eq%1#0",
+        "minter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0",
+        "eq%1#0"
+      ]
+    },
+    "202": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "minter#0",
+        "tmp%1#0"
+      ]
+    },
+    "203": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "minter#0",
+        "nft_name#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0"
+      ]
+    },
+    "206": {
+      "op": "txna ApplicationArgs 3",
+      "defined_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ]
+    },
+    "209": {
+      "op": "dup",
+      "defined_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)"
+      ]
+    },
+    "210": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)",
+        "0"
+      ]
+    },
+    "211": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%1#0",
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "aggregate%array_length%1#0"
+      ]
+    },
+    "212": {
+      "op": "intc_1 // 2",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "aggregate%array_length%1#0",
+        "2"
+      ]
+    },
+    "213": {
+      "op": "+",
+      "defined_out": [
+        "add%1#0",
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "add%1#0"
+      ]
+    },
+    "214": {
+      "op": "dig 1",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "add%1#0",
+        "tmp%3#0 (copy)"
+      ]
+    },
+    "216": {
+      "op": "len",
+      "defined_out": [
+        "add%1#0",
+        "len%2#0",
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "add%1#0",
+        "len%2#0"
+      ]
+    },
+    "217": {
+      "op": "==",
+      "defined_out": [
+        "eq%2#0",
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0",
+        "eq%2#0"
+      ]
+    },
+    "218": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "tmp%3#0"
+      ]
+    },
+    "219": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ]
+    },
+    "222": {
+      "op": "itxn_begin"
+    },
+    "223": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0"
+      ]
+    },
+    "225": {
+      "op": "dupn 3",
+      "defined_out": [
+        "inner_txn_params%0%%param_ConfigAssetClawback_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetClawback_idx_0#0"
+      ]
+    },
+    "227": {
+      "op": "itxn_field ConfigAssetClawback",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetFreeze_idx_0#0"
+      ]
+    },
+    "229": {
+      "op": "itxn_field ConfigAssetFreeze",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0",
+        "inner_txn_params%0%%param_ConfigAssetReserve_idx_0#0"
+      ]
+    },
+    "231": {
+      "op": "itxn_field ConfigAssetReserve",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "inner_txn_params%0%%param_ConfigAssetManager_idx_0#0"
+      ]
+    },
+    "233": {
+      "op": "itxn_field ConfigAssetManager",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ]
+    },
+    "235": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0",
+        "0"
+      ]
+    },
+    "236": {
+      "op": "itxn_field ConfigAssetDefaultFrozen",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0",
+        "nft_url#0"
+      ]
+    },
+    "238": {
+      "op": "itxn_field ConfigAssetURL",
+      "stack_out": [
+        "minter#0",
+        "nft_name#0"
+      ]
+    },
+    "240": {
+      "op": "itxn_field ConfigAssetName",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "242": {
+      "op": "pushbytes \"LEVI\"",
+      "defined_out": [
+        "\"LEVI\"",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "\"LEVI\""
+      ]
+    },
+    "248": {
+      "op": "itxn_field ConfigAssetUnitName",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "250": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "minter#0",
+        "0"
+      ]
+    },
+    "251": {
+      "op": "itxn_field ConfigAssetDecimals",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "253": {
+      "op": "intc_2 // 1",
+      "defined_out": [
+        "1",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "1"
+      ]
+    },
+    "254": {
+      "op": "itxn_field ConfigAssetTotal",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "256": {
+      "op": "intc_3 // acfg",
+      "defined_out": [
+        "acfg",
+        "minter#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "acfg"
+      ]
+    },
+    "257": {
+      "op": "itxn_field TypeEnum",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "259": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "minter#0",
+        "0"
+      ]
+    },
+    "260": {
+      "op": "itxn_field Fee",
+      "stack_out": [
+        "minter#0"
+      ]
+    },
+    "262": {
+      "op": "itxn_submit"
+    },
+    "263": {
+      "op": "itxn CreatedAssetID",
+      "defined_out": [
+        "minter#0",
+        "result.CreatedAssetID#0"
+      ],
+      "stack_out": [
+        "minter#0",
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "265": {
+      "op": "itxn_begin"
+    },
+    "266": {
+      "op": "intc_2 // 1",
+      "stack_out": [
+        "minter#0",
+        "result.CreatedAssetID#0",
+        "1"
+      ]
+    },
+    "267": {
+      "op": "itxn_field AssetAmount",
+      "stack_out": [
+        "minter#0",
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "269": {
+      "op": "swap",
+      "stack_out": [
+        "result.CreatedAssetID#0",
+        "minter#0"
+      ]
+    },
+    "270": {
+      "op": "itxn_field AssetReceiver",
+      "stack_out": [
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "272": {
+      "op": "dup",
+      "defined_out": [
+        "result.CreatedAssetID#0",
+        "result.CreatedAssetID#0 (copy)"
+      ],
+      "stack_out": [
+        "result.CreatedAssetID#0",
+        "result.CreatedAssetID#0 (copy)"
+      ]
+    },
+    "273": {
+      "op": "itxn_field XferAsset",
+      "stack_out": [
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "275": {
+      "op": "pushint 4 // axfer",
+      "defined_out": [
+        "axfer",
+        "result.CreatedAssetID#0"
+      ],
+      "stack_out": [
+        "result.CreatedAssetID#0",
+        "axfer"
+      ]
+    },
+    "277": {
+      "op": "itxn_field TypeEnum",
+      "stack_out": [
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "279": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "result.CreatedAssetID#0",
+        "0"
+      ]
+    },
+    "280": {
+      "op": "itxn_field Fee",
+      "stack_out": [
+        "result.CreatedAssetID#0"
+      ]
+    },
+    "282": {
+      "op": "itxn_submit"
+    },
+    "283": {
+      "op": "itob",
+      "defined_out": [
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "284": {
+      "op": "pushbytes 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0",
+        "0x151f7c75"
+      ]
+    },
+    "290": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "291": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "tmp%6#0"
+      ]
+    },
+    "292": {
+      "op": "log",
+      "stack_out": []
+    },
+    "293": {
+      "op": "intc_2 // 1",
+      "stack_out": [
+        "1"
+      ]
+    },
+    "294": {
+      "op": "return",
+      "stack_out": []
+    }
+  }
+}
