@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  leviathancoin-contracts-validate:
+    name: Run leviathancoin-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/leviathancoin-contracts-ci.yaml
+
+  leviathancoin-contracts-release:
+    name: Run leviathancoin-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/leviathancoin-contracts-cd.yaml
+    needs: leviathancoin-contracts-validate
+
+  leviathancoin-frontend-validate:
+    name: Run leviathancoin-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/leviathancoin-frontend-ci.yaml
+
+  leviathancoin-frontend-release:
+    name: Run leviathancoin-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/leviathancoin-frontend-cd.yaml
+    needs: leviathancoin-frontend-validate

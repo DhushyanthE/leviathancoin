@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  leviathancoin-contracts-ci:
+    name: Run leviathancoin-contracts validation
+    uses: ./.github/workflows/leviathancoin-contracts-ci.yaml
+
+  leviathancoin-frontend-ci:
+    name: Run leviathancoin-frontend validation
+    uses: ./.github/workflows/leviathancoin-frontend-ci.yaml
+
