@@ -11,6 +11,8 @@ const nftController = require('./controllers/nftController');
 const miningController = require('./controllers/miningController');
 const walletController = require('./controllers/walletController');
 const bftController = require('./controllers/bftController');
+const stakingController = require('./controllers/stakingController');
+const daoController = require('./controllers/daoController');
 
 // Import BFT Consensus Service
 const BFTConsensusService = require('./services/bftConsensus');

@@ -2,6 +2,7 @@
 import { useWallet } from '@txnlab/use-wallet-react'
 import React, { useState } from 'react'
 import AppCalls from './components/AppCalls'
+import BFTDashboard from './components/BFTDashboard'
 import ConnectWallet from './components/ConnectWallet'
 import LeviathanToken from './components/LeviathanToken'
 import Transact from './components/Transact'
@@ -13,6 +14,7 @@ const Home: React.FC<HomeProps> = () => {
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false)
   const [appCallsDemoModal, setAppCallsDemoModal] = useState<boolean>(false)
   const [leviathanTokenModal, setLeviathanTokenModal] = useState<boolean>(false)
+  const [bftDashboardModal, setBftDashboardModal] = useState<boolean>(false)
   const { activeAddress } = useWallet()
 
   const toggleWalletModal = () => {
@@ -31,6 +33,10 @@ const Home: React.FC<HomeProps> = () => {
     setLeviathanTokenModal(!leviathanTokenModal)
   }
 
+  const toggleBFTDashboardModal = () => {
+    setBftDashboardModal(!bftDashboardModal)
+  }
+
   return (
     <div className="hero min-h-screen bg-gradient-to-br from-blue-900 to-purple-900">
       <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
@@ -38,7 +44,7 @@ const Home: React.FC<HomeProps> = () => {
           <h1 className="text-4xl">
             Welcome to <div className="font-bold text-purple-600">Leviathan Coin</div>
           </h1>
-          <p className="py-6">Your own blockchain network with mining and NFT capabilities on Algorand.</p>
+          <p className="py-6">Your own blockchain network with mining, NFT, and BFT consensus capabilities on Algorand.</p>
 
           <div className="grid">
             <a
@@ -72,12 +78,30 @@ const Home: React.FC<HomeProps> = () => {
                 </button>
               </>
             )}
+
+            <button data-test-id="bft-dashboard" className="btn btn-accent m-2" onClick={toggleBFTDashboardModal}>
+              🔐 BFT Consensus Dashboard
+            </button>
           </div>
 
           <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
           <Transact openModal={openDemoModal} setModalState={setOpenDemoModal} />
           <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
           <LeviathanToken openModal={leviathanTokenModal} setModalState={setLeviathanTokenModal} />
+
+          {bftDashboardModal && (
+            <dialog className="modal modal-open">
+              <div className="modal-box max-w-4xl">
+                <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={toggleBFTDashboardModal}>
+                  ✕
+                </button>
+                <BFTDashboard />
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button onClick={toggleBFTDashboardModal}>close</button>
+              </form>
+            </dialog>
+          )}
         </div>
       </div>
     </div>
