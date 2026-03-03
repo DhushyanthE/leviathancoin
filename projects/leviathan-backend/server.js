@@ -10,6 +10,10 @@ const tokenController = require('./controllers/tokenController');
 const nftController = require('./controllers/nftController');
 const miningController = require('./controllers/miningController');
 const walletController = require('./controllers/walletController');
+const bftController = require('./controllers/bftController');
+
+// Import BFT Consensus Service
+const BFTConsensusService = require('./services/bftConsensus');
 
 const app = express();
 const server = http.createServer(app);
@@ -57,6 +61,12 @@ app.use('/api/wallet', walletController);
 app.use('/api/token', tokenController);
 app.use('/api/nft', nftController);
 app.use('/api/mining', miningController);
+app.use('/api/bft', bftController);
+
+// Initialize BFT Consensus Service
+const bftService = new BFTConsensusService(io);
+app.set('bftService', bftService);
+console.log('🔐 BFT Consensus Service initialized');
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
