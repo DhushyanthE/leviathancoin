@@ -10,6 +10,7 @@ Node.js/Express backend for the Leviathan Blockchain Network.
 - **NFT Operations**: Create NFTs (ARC-72), transfer NFTs, view owned NFTs
 - **Mining**: Interact with the mining smart contract
 - **Real-time Events**: WebSocket support for blockchain events
+- **Decentralization Roadmap**: Architectural guidance for implementing libp2p, zk-proofs, and trustless real-time services in the backend
 
 ## Installation
 
@@ -75,6 +76,42 @@ The server will run on `http://localhost:3001`
 - `GET /api/mining/stats` - Get mining statistics
 - `GET /api/mining/leaderboard` - Get mining leaderboard
 - `GET /api/mining/difficulty` - Get mining difficulty
+
+### Infrastructure
+- `GET /api/infrastructure/status` - Get status of P2P, oracle, ZK proof, and BFT services
+- `GET /api/infrastructure/p2p/topic/:name` - Get a libp2p topic namespace for the given name
+- `POST /api/infrastructure/p2p/subscribe` - Subscribe to a P2P topic and begin forwarding messages via WebSocket
+- `GET /api/infrastructure/oracle/:symbol` - Fetch the current decentralized price for a symbol
+- `POST /api/infrastructure/oracle/publish` - Publish a signed price update (oracle staging)
+- `POST /api/infrastructure/zk/quantum-echo/proof` - Generate scaffold artifacts for a quantum echo ZK proof
+- `POST /api/infrastructure/zk/ponw/proof` - Generate scaffold artifacts for a PoNW ZK proof
+- `POST /api/infrastructure/integration/storage/upload` - Simulate uploading to web3.storage
+- `POST /api/infrastructure/integration/storage/pinata` - Simulate pinning via Pinata
+- `POST /api/infrastructure/integration/thirdweb/deploy` - Generate a thirdweb contract deployment template
+- `GET /api/infrastructure/integration/chainlink/:pair` - Simulate reading a Chainlink price feed
+- `POST /api/infrastructure/integration/gnosis/safe` - Generate a Gnosis Safe config template
+- `POST /api/infrastructure/integration/molecule/ipnft` - Simulate minting an IP-NFT metadata payload
+- `POST /api/infrastructure/integration/humantech/proof` - Simulate a human.tech proof of personhood
+
+## Example Infrastructure Client
+
+To run the example client against the backend:
+
+```bash
+cd projects/leviathan-backend
+node examples/infrastructureClient.js status
+```
+
+Example commands:
+
+```bash
+node examples/infrastructureClient.js status
+node examples/infrastructureClient.js oracle KONT
+node examples/infrastructureClient.js topic metrics
+node examples/infrastructureClient.js subscribe /kont/metrics/1.0.0
+```
+
+The `subscribe` command sends a subscription request to the backend. If a WebSocket client is connected to the server, it will receive forwarded P2P messages on the `P2P_MESSAGE` event.
 
 ## WebSocket Events
 
@@ -151,6 +188,14 @@ RPC_URL=https://mainnet-api.algorand.network
 - In production, use environment variables for sensitive data
 - Implement proper authentication and rate limiting
 - Use HTTPS in production
+
+## Real-Time Decentralization
+
+For the platform's next evolution toward decentralized real-time feeds, trustless verification, and distributed mining/security, see [REALTIME_DECENTRALIZATION.md](REALTIME_DECENTRALIZATION.md).
+
+## Web3 Infrastructure Integration
+
+To accelerate decentralization by using existing, battle-tested Web3 protocols, see [WEB3_INFRASTRUCTURE_INTEGRATION.md](WEB3_INFRASTRUCTURE_INTEGRATION.md).
 
 ## License
 

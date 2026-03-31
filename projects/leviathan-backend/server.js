@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const algosdk = require('algosdk');
 
@@ -13,9 +14,11 @@ const walletController = require('./controllers/walletController');
 const bftController = require('./controllers/bftController');
 const stakingController = require('./controllers/stakingController');
 const daoController = require('./controllers/daoController');
+const infrastructureController = require('./controllers/infrastructureController');
 
 // Import BFT Consensus Service
 const BFTConsensusService = require('./services/bftConsensus');
+const { P2PService, DecentralizedOracleService, ZKProofService, Web3IntegrationService } = require('./services');
 
 const app = express();
 const server = http.createServer(app);
@@ -51,10 +54,20 @@ app.set('algodClient', getAlgodClient());
 
 // Health check
 app.get('/api/health', (req, res) => {
+  const p2pService = req.app.get('p2pService');
+  const oracleService = req.app.get('oracleService');
+  const zkProofService = req.app.get('zkProofService');
+
   res.json({
     status: 'online',
     network: process.env.NETWORK || 'localnet',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    services: {
+      p2p: !!p2pService,
+      oracle: !!oracleService,
+      zkProof: !!zkProofService,
+      bft: !!req.app.get('bftService'),
+    },
   });
 });
 
@@ -64,11 +77,31 @@ app.use('/api/token', tokenController);
 app.use('/api/nft', nftController);
 app.use('/api/mining', miningController);
 app.use('/api/bft', bftController);
+app.use('/api/infrastructure', infrastructureController);
 
 // Initialize BFT Consensus Service
 const bftService = new BFTConsensusService(io);
 app.set('bftService', bftService);
 console.log('🔐 BFT Consensus Service initialized');
+
+// Initialize decentralized backend services
+const p2pService = new P2PService({ topicPrefix: '/kont' });
+const oracleService = new DecentralizedOracleService({ topicPrefix: '/kont/price' });
+const zkProofService = new ZKProofService({
+  circuitsDir: path.join(__dirname, 'zk-circuits'),
+  artifactsDir: path.join(__dirname, 'zk-artifacts'),
+});
+const web3IntegrationService = new Web3IntegrationService({
+  baseDir: path.join(__dirname, 'web3-integration'),
+});
+zkProofService.ensureDirectories();
+
+app.set('p2pService', p2pService);
+app.set('oracleService', oracleService);
+app.set('zkProofService', zkProofService);
+app.set('web3IntegrationService', web3IntegrationService);
+
+console.log('🌐 Decentralized backend services initialized');
 
 // WebSocket connection handling
 io.on('connection', (socket) => {

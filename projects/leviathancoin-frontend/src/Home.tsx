@@ -6,6 +6,7 @@ import BFTDashboard from './components/BFTDashboard'
 import ConnectWallet from './components/ConnectWallet'
 import LeviathanToken from './components/LeviathanToken'
 import Transact from './components/Transact'
+import Web3StorageUpload from './components/Web3StorageUpload'
 
 interface HomeProps {}
 
@@ -14,6 +15,7 @@ const Home: React.FC<HomeProps> = () => {
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false)
   const [appCallsDemoModal, setAppCallsDemoModal] = useState<boolean>(false)
   const [leviathanTokenModal, setLeviathanTokenModal] = useState<boolean>(false)
+  const [web3StorageModal, setWeb3StorageModal] = useState<boolean>(false)
   const [bftDashboardModal, setBftDashboardModal] = useState<boolean>(false)
   const { activeAddress } = useWallet()
 
@@ -31,6 +33,10 @@ const Home: React.FC<HomeProps> = () => {
 
   const toggleLeviathanTokenModal = () => {
     setLeviathanTokenModal(!leviathanTokenModal)
+  }
+
+  const toggleWeb3StorageModal = () => {
+    setWeb3StorageModal(!web3StorageModal)
   }
 
   const toggleBFTDashboardModal = () => {
@@ -76,6 +82,9 @@ const Home: React.FC<HomeProps> = () => {
                 <button data-test-id="leviathan-token-demo" className="btn btn-secondary m-2" onClick={toggleLeviathanTokenModal}>
                   Leviathan Mining & NFT
                 </button>
+                <button data-test-id="web3storage-demo" className="btn btn-outline m-2" onClick={toggleWeb3StorageModal}>
+                  Web3.Storage Upload Demo
+                </button>
               </>
             )}
 
@@ -88,6 +97,20 @@ const Home: React.FC<HomeProps> = () => {
           <Transact openModal={openDemoModal} setModalState={setOpenDemoModal} />
           <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
           <LeviathanToken openModal={leviathanTokenModal} setModalState={setLeviathanTokenModal} />
+
+          {web3StorageModal && (
+            <dialog className="modal modal-open">
+              <div className="modal-box max-w-4xl">
+                <button className="btn btn-sm btn-circle absolute right-2 top-2" onClick={toggleWeb3StorageModal}>
+                  ✕
+                </button>
+                <Web3StorageUpload closeModal={toggleWeb3StorageModal} />
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button onClick={toggleWeb3StorageModal}>close</button>
+              </form>
+            </dialog>
+          )}
 
           {bftDashboardModal && (
             <dialog className="modal modal-open">

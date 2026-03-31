@@ -1,7 +1,70 @@
 const express = require('express');
 const router = express.Router();
 const algosdk = require('algosdk');
-const { v4: uuidv4 } = require('uuid');
+
+const sendError = (res, status, message) => res.status(status).json({ success: false, error: message });
+
+const getAlgodClient = req => {
+  const algodClient = req.app.get('algodClient');
+  if (!algodClient) {
+    throw new Error('Algod client is not configured');
+  }
+  return algodClient;
+};
+
+const getAccountFromMnemonic = mnemonic => {
+  if (typeof mnemonic !== 'string' || mnemonic.trim().length === 0) {
+    throw new Error('Mnemonic is required');
+  }
+
+  try {
+    return algosdk.mnemonicToSecretKey(mnemonic.trim());
+  } catch (error) {
+    throw new Error('Invalid mnemonic phrase');
+  }
+};
+
+const parsePositiveInteger = (value, fieldName) => {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error(`Invalid ${fieldName}`);
+  }
+  return parsed;
+};
+
+const parseNonNegativeInteger = (value, fieldName) => {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new Error(`Invalid ${fieldName}`);
+  }
+  return parsed;
+};
+
+const buildAssetResponse = assetInfo => {
+  const asset = assetInfo.asset ?? {};
+  const params = asset.params ?? {};
+
+  return {
+    id: asset.index ?? asset.id ?? params.index ?? null,
+    name: params.name ?? '',
+    unitName: params['unit-name'] ?? '',
+    total: params.total ?? 0,
+    decimals: params.decimals ?? 0,
+    creator: params.creator ?? '',
+    manager: params.manager ?? '',
+    reserve: params.reserve ?? '',
+    freeze: params.freeze ?? '',
+    clawback: params.clawback ?? '',
+    url: params.url ?? '',
+    metadataHash: params['metadata-hash'] ?? '',
+  };
+};
+
+const submitSignedTransaction = async (algodClient, signedTxn) => {
+  const { txId } = await algodClient.sendRawTransaction(signedTxn).do();
+  await algosdk.waitForConfirmation(algodClient, txId, 4);
+  return txId;
+};
 
 /**
  * Get token info (ASA)
@@ -9,29 +72,17 @@ const { v4: uuidv4 } = require('uuid');
  */
 router.get('/info/:assetId', async (req, res) => {
   try {
-    const { assetId } = req.params;
-    const algodClient = req.app.get('algodClient');
-
-    const assetInfo = await algodClient.getAssetByID(parseInt(assetId)).do();
+    const assetId = parsePositiveInteger(req.params.assetId, 'assetId');
+    const algodClient = getAlgodClient(req);
+    const assetInfo = await algodClient.getAssetByID(assetId).do();
 
     res.json({
       success: true,
-      asset: {
-        id: assetInfo.asset.id,
-        name: assetInfo.asset.params.name,
-        unitName: assetInfo.asset.params['unit-name'],
-        total: assetInfo.asset.params.total,
-        decimals: assetInfo.asset.params.decimals,
-        creator: assetInfo.asset.params.creator,
-        manager: assetInfo.asset.params.manager,
-        reserve: assetInfo.asset.params.reserve,
-        freeze: assetInfo.asset.params.freeze,
-        clawback: assetInfo.asset.params.clawback,
-        url: assetInfo.asset.params.url
-      }
+      asset: buildAssetResponse(assetInfo),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    const status = error.message.includes('Invalid') ? 400 : 500;
+    sendError(res, status, error.message);
   }
 });
 
@@ -41,66 +92,68 @@ router.get('/info/:assetId', async (req, res) => {
  */
 router.post('/create', async (req, res) => {
   try {
-    const { mnemonic, name, unitName, total, decimals = 6, url = '', manager } = req.body;
+    const {
+      mnemonic,
+      name,
+      unitName,
+      total,
+      decimals = 6,
+      url = '',
+      manager,
+      reserve,
+      freeze,
+      clawback,
+    } = req.body;
 
-    if (!mnemonic || !name || !unitName || !total) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields: mnemonic, name, unitName, total'
-      });
+    if (!mnemonic || !name || !unitName || total === undefined) {
+      return sendError(res, 400, 'Missing required fields: mnemonic, name, unitName, total');
     }
 
-    const algodClient = req.app.get('algodClient');
-    const account = algosdk.mnemonicToSecretKey(mnemonic);
+    const algodClient = getAlgodClient(req);
+    const account = getAccountFromMnemonic(mnemonic);
     const sender = account.addr;
+    const assetTotal = parsePositiveInteger(total, 'total');
+    const assetDecimals = parseNonNegativeInteger(decimals, 'decimals');
 
-    // Get transaction parameters
     const params = await algodClient.getTransactionParams().do();
 
-    // Create the asset creation transaction
     const txn = algosdk.makeAssetCreateTxnWithSuggestedParams(
       sender,
-      Buffer.from(''), // note
-      parseInt(total),
-      parseInt(decimals),
-      false, // default frozen
+      undefined,
+      assetTotal,
+      assetDecimals,
+      false,
       manager || sender,
-      manager || sender,
-      manager || sender,
-      manager || sender,
+      reserve || manager || sender,
+      freeze || manager || sender,
+      clawback || manager || sender,
       unitName,
       name,
       url,
-      'https://leviathancoin.com',
+      '',
       params
     );
 
-    // Sign the transaction
     const signedTxn = txn.signTxn(account.sk);
+    const txId = await submitSignedTransaction(algodClient, signedTxn);
 
-    // Submit the transaction
-    const { txId } = await algodClient.sendRawTransaction(signedTxn).do();
-
-    // Wait for confirmation
-    await algosdk.waitForConfirmation(algodClient, txId, 4);
-
-    // Get the asset ID from the transaction
     const ptx = await algodClient.pendingTransactionInformation(txId).do();
     const assetId = ptx['asset-index'];
 
     res.json({
       success: true,
-      txId: txId,
-      assetId: assetId,
+      txId,
+      assetId,
       message: 'Token created successfully!'
     });
 
-    // Emit event to connected clients
     const io = req.app.get('io');
-    io.emit('TOKEN_CREATED', { assetId, name, unitName });
-
+    if (io) {
+      io.emit('TOKEN_CREATED', { assetId, name, unitName });
+    }
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    const status = error.message.includes('Invalid') || error.message.includes('Missing') ? 400 : 500;
+    sendError(res, status, error.message);
   }
 });
 
@@ -112,49 +165,43 @@ router.post('/transfer', async (req, res) => {
   try {
     const { mnemonic, assetId, to, amount } = req.body;
 
-    if (!mnemonic || !assetId || !to || !amount) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields: mnemonic, assetId, to, amount'
-      });
+    if (!mnemonic || !assetId || !to || amount === undefined) {
+      return sendError(res, 400, 'Missing required fields: mnemonic, assetId, to, amount');
     }
 
-    const algodClient = req.app.get('algodClient');
-    const account = algosdk.mnemonicToSecretKey(mnemonic);
+    if (!algosdk.isValidAddress(to)) {
+      return sendError(res, 400, 'Invalid recipient address');
+    }
+
+    const algodClient = getAlgodClient(req);
+    const account = getAccountFromMnemonic(mnemonic);
     const sender = account.addr;
+    const parsedAssetId = parsePositiveInteger(assetId, 'assetId');
+    const parsedAmount = parseNonNegativeInteger(amount, 'amount');
 
-    // Get transaction parameters
     const params = await algodClient.getTransactionParams().do();
-
-    // Create asset transfer transaction
-    const txn = algosdk.makeAssetTransferTxn(
+    const txn = algosdk.makeAssetTransferTxnWithSuggestedParams(
       sender,
       to,
-      Buffer.from(''), // note
-      Buffer.from(''), // closeTo
-      parseInt(amount),
-      undefined, //RevocationTarget
-      parseInt(assetId),
+      undefined,
+      undefined,
+      parsedAmount,
+      parsedAssetId,
       params
     );
 
-    // Sign the transaction
     const signedTxn = txn.signTxn(account.sk);
-
-    // Submit the transaction
-    const { txId } = await algodClient.sendRawTransaction(signedTxn).do();
-
-    // Wait for confirmation
-    await algosdk.waitForConfirmation(algodClient, txId, 4);
+    const txId = await submitSignedTransaction(algodClient, signedTxn);
 
     res.json({
+
       success: true,
-      txId: txId,
+      txId,
       message: 'Transfer completed successfully!'
     });
-
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    const status = error.message.includes('Invalid') || error.message.includes('Missing') ? 400 : 500;
+    sendError(res, status, error.message);
   }
 });
 
@@ -167,48 +214,36 @@ router.post('/optin', async (req, res) => {
     const { mnemonic, assetId } = req.body;
 
     if (!mnemonic || !assetId) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields: mnemonic, assetId'
-      });
+      return sendError(res, 400, 'Missing required fields: mnemonic, assetId');
     }
 
-    const algodClient = req.app.get('algodClient');
-    const account = algosdk.mnemonicToSecretKey(mnemonic);
+    const algodClient = getAlgodClient(req);
+    const account = getAccountFromMnemonic(mnemonic);
     const sender = account.addr;
+    const parsedAssetId = parsePositiveInteger(assetId, 'assetId');
 
-    // Get transaction parameters
     const params = await algodClient.getTransactionParams().do();
-
-    // Create asset transfer transaction (0 amount for opt-in)
-    const txn = algosdk.makeAssetTransferTxn(
+    const txn = algosdk.makeAssetTransferTxnWithSuggestedParams(
       sender,
       sender,
-      Buffer.from(''), // note
-      Buffer.from(''), // closeTo
+      undefined,
+      undefined,
       0,
-      undefined, //RevocationTarget
-      parseInt(assetId),
+      parsedAssetId,
       params
     );
 
-    // Sign the transaction
     const signedTxn = txn.signTxn(account.sk);
-
-    // Submit the transaction
-    const { txId } = await algodClient.sendRawTransaction(signedTxn).do();
-
-    // Wait for confirmation
-    await algosdk.waitForConfirmation(algodClient, txId, 4);
+    const txId = await submitSignedTransaction(algodClient, signedTxn);
 
     res.json({
       success: true,
-      txId: txId,
+      txId,
       message: 'Opt-in completed successfully!'
     });
-
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    const status = error.message.includes('Invalid') || error.message.includes('Missing') ? 400 : 500;
+    sendError(res, status, error.message);
   }
 });
 
