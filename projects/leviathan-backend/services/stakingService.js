@@ -55,6 +55,7 @@ async function stakeTokens(userAddress, amount, algosdk, algodClient) {
       startTime: Date.now(),
       rewardsClaimed: 0,
       lastClaimTime: Date.now(),
+      history: [],
     };
     stakes.set(userAddress, stakeData);
   }
@@ -62,6 +63,12 @@ async function stakeTokens(userAddress, amount, algosdk, algodClient) {
   // Add to staked amount
   stakeData.stakedAmount += amount;
   stakeData.lastStakeTime = Date.now();
+  stakeData.history.push({
+    type: 'stake',
+    amount,
+    timestamp: Date.now(),
+    totalStaked: stakeData.stakedAmount,
+  });
 
   // Update total staked
   stakingStats.totalStaked += amount;
@@ -99,6 +106,13 @@ async function requestUnstake(userAddress, amount) {
   // Reduce staked amount
   stakeData.stakedAmount -= amount;
   stakingStats.totalStaked -= amount;
+  stakeData.history.push({
+    type: 'unstake_requested',
+    amount,
+    timestamp: Date.now(),
+    pendingUnlockTime: stakeData.pendingUnstake.unlockTime,
+    totalStaked: stakeData.stakedAmount,
+  });
 
   // Remove validator status if below requirement
   if (stakeData.stakedAmount < STAKING_CONFIG.VALIDATOR_REQUIREMENT) {
@@ -139,6 +153,12 @@ async function completeUnstake(userAddress) {
 
   // Calculate rewards to claim
   const pendingRewards = calculatePendingRewards(stakeData);
+  stakeData.history.push({
+    type: 'unstake_completed',
+    amount: pending.amount,
+    timestamp: Date.now(),
+    totalStaked: stakeData.stakedAmount,
+  });
 
   return {
     success: true,
@@ -167,6 +187,12 @@ async function claimRewards(userAddress) {
   // Update stake data
   stakeData.rewardsClaimed += pendingRewards;
   stakeData.lastClaimTime = Date.now();
+  stakeData.history.push({
+    type: 'claim_rewards',
+    amount: pendingRewards,
+    timestamp: Date.now(),
+    totalRewardsClaimed: stakeData.rewardsClaimed,
+  });
 
   // Update stats
   stakingStats.totalRewardsDistributed += pendingRewards;
@@ -212,7 +238,7 @@ async function becomeValidator(userAddress, stakeAmount) {
   const validatorData = {
     address: userAddress,
     stakeAmount: stakeAmount,
-   commissionRate: STAKING_CONFIG.COMMISSION_RATE,
+    commissionRate: STAKING_CONFIG.COMMISSION_RATE,
     totalBlocksProduced: 0,
     totalRewardsEarned: 0,
     uptime: 100,
@@ -222,6 +248,16 @@ async function becomeValidator(userAddress, stakeAmount) {
 
   validators.set(userAddress, validatorData);
   stakingStats.validatorCount++;
+
+  const stakeData = stakes.get(userAddress);
+  if (stakeData) {
+    stakeData.history.push({
+      type: 'validator_promoted',
+      stakeAmount,
+      timestamp: Date.now(),
+      status: 'active',
+    });
+  }
 
   return {
     success: true,
@@ -255,7 +291,13 @@ function getStakeInfo(userAddress) {
     rewardsClaimed: stakeData.rewardsClaimed,
     isValidator: isValidator,
     lastClaimTime: stakeData.lastClaimTime,
+    history: stakeData.history || [],
   };
+}
+
+function getStakeHistory(userAddress) {
+  const stakeData = stakes.get(userAddress);
+  return stakeData ? stakeData.history || [] : [];
 }
 
 /**
@@ -348,6 +390,7 @@ module.exports = {
   completeUnstake,
   claimRewards,
   getStakeInfo,
+  getStakeHistory,
   getValidators,
   getStakingStats,
   getStakingLeaderboard,

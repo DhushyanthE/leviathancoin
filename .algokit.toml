@@ -6,4 +6,14 @@ type = 'workspace'
 projects_root_path = 'projects'
 
 [project.run]
-build = ['leviathancoin-contracts', 'leviathancoin-frontend']
+build = ['leviathancoin-contracts', 'leviathancoin-frontend', 'leviathan-backend']
+deploy = { commands = [
+  'algokit project build',
+  'algokit project deploy localnet'
+], description = 'Build the full workspace and deploy smart contracts to LocalNet' }
+full-deploy = { commands = [
+  'algokit project build',
+  'algokit project deploy localnet',
+  'cd projects/leviathancoin-frontend && npm install && npm run build',
+  'cd projects/leviathan-backend && npm install'
+], description = 'Build, deploy, and prepare frontend/backend for local development' }

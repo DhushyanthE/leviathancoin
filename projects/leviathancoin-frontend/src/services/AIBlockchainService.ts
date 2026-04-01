@@ -40,7 +40,6 @@ interface NeuralNetworkConfig {
   batchSize: number
   epochs: number
 }
-
 interface InferenceRequest {
   requestId: string
   modelHash: string

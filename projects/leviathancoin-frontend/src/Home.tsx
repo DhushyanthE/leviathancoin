@@ -5,6 +5,7 @@ import AppCalls from './components/AppCalls'
 import BFTDashboard from './components/BFTDashboard'
 import ConnectWallet from './components/ConnectWallet'
 import LeviathanToken from './components/LeviathanToken'
+import StakingPanel from './components/StakingPanel'
 import Transact from './components/Transact'
 import Web3StorageUpload from './components/Web3StorageUpload'
 
@@ -17,6 +18,7 @@ const Home: React.FC<HomeProps> = () => {
   const [leviathanTokenModal, setLeviathanTokenModal] = useState<boolean>(false)
   const [web3StorageModal, setWeb3StorageModal] = useState<boolean>(false)
   const [bftDashboardModal, setBftDashboardModal] = useState<boolean>(false)
+  const [stakingModal, setStakingModal] = useState<boolean>(false)
   const { activeAddress } = useWallet()
 
   const toggleWalletModal = () => {
@@ -82,6 +84,9 @@ const Home: React.FC<HomeProps> = () => {
                 <button data-test-id="leviathan-token-demo" className="btn btn-secondary m-2" onClick={toggleLeviathanTokenModal}>
                   Leviathan Mining & NFT
                 </button>
+                <button data-test-id="staking-panel" className="btn btn-success m-2" onClick={() => setStakingModal(true)}>
+                  Stake & Validator Panel
+                </button>
                 <button data-test-id="web3storage-demo" className="btn btn-outline m-2" onClick={toggleWeb3StorageModal}>
                   Web3.Storage Upload Demo
                 </button>
@@ -97,6 +102,7 @@ const Home: React.FC<HomeProps> = () => {
           <Transact openModal={openDemoModal} setModalState={setOpenDemoModal} />
           <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
           <LeviathanToken openModal={leviathanTokenModal} setModalState={setLeviathanTokenModal} />
+          <StakingPanel openModal={stakingModal} setModalState={setStakingModal} />
 
           {web3StorageModal && (
             <dialog className="modal modal-open">

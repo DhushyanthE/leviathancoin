@@ -3,301 +3,1316 @@
 
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
-    intcblock 0 2 1 3
-    // smart_contracts/leviathan_token/contract.py:5
+    intcblock 0 1 2 8
+    bytecblock "admin" "balances" 0x151f7c75 "total_supply" "proposal_count" "transfer_tax_rate" "max_transaction_amount" "max_wallet_amount" "trading_enabled" "total_staked" "escrow_nonce" "tax_wallet" "staked_balances" "is_decentralized" "cooldown_enabled" "trade_cooldown" "proposal_yes" "proposal_no" "escrows" "blacklisted" "amm_pools"
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // smart_contracts/leviathan_token/contract.py:25-26
+    // # Base Token State (10 Quadrillion base units = 10 Billion tokens with 6 decimals)
+    // self.total_supply = UInt64(10_000_000_000_000_000)
+    bytec_3 // "total_supply"
+    pushint 10000000000000000
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:27
+    // self.max_tax = UInt64(5)
+    pushbytes "max_tax"
+    pushint 5
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:31
+    // self.is_decentralized = GlobalState(UInt64(0))
+    bytec 13 // "is_decentralized"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:33
+    // self.transfer_tax_rate = GlobalState(UInt64(0))
+    bytec 5 // "transfer_tax_rate"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:34
+    // self.max_transaction_amount = GlobalState(UInt64(0))
+    bytec 6 // "max_transaction_amount"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:35
+    // self.max_wallet_amount = GlobalState(UInt64(0))
+    bytec 7 // "max_wallet_amount"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:37
+    // self.trading_enabled = GlobalState(UInt64(0))
+    bytec 8 // "trading_enabled"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:38
+    // self.cooldown_enabled = GlobalState(UInt64(1))
+    bytec 14 // "cooldown_enabled"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:39
+    // self.trade_cooldown = GlobalState(UInt64(5))
+    bytec 15 // "trade_cooldown"
+    pushint 5
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:41-42
+    // # DAO State
+    // self.proposal_count = GlobalState(UInt64(0))
+    bytec 4 // "proposal_count"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:43
+    // self.total_staked = GlobalState(UInt64(0))
+    bytec 9 // "total_staked"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:44
+    // self.escrow_nonce = GlobalState(UInt64(0))
+    bytec 10 // "escrow_nonce"
+    intc_0 // 0
+    app_global_put
+
+main_after_if_else@2:
+    // smart_contracts/leviathan_token/contract.py:23
     // class LeviathanToken(ARC4Contract):
-    txn NumAppArgs
-    bz main___algopy_default_create@10
     txn OnCompletion
     !
     assert
     txn ApplicationID
-    assert
-    pushbytess 0x1265c841 0x43cb07a0 0x04167581 // method "create_token(uint64,string,string,string)void", method "mine(address)uint64", method "mint_nft(address,string,string)uint64"
+    bz main_create_NoOp@18
+    pushbytess 0x53e859e3 0x3d59b101 0x61f2662b 0x5434a7e3 0x78414262 0xe5231abf 0x04a94004 0xd2413371 0x0f839ea1 0x9fee7418 0x32586ffd 0x8a777839 // method "renounce_central_authority()void", method "record_immutable_data(byte[],string)void", method "verify_secure_payload(byte[],byte[])bool", method "stake_tokens(uint64)void", method "create_proposal(string)uint64", method "vote_on_proposal(uint64,bool)void", method "create_automated_escrow(address,uint64,uint64)uint64", method "execute_automated_settlement(uint64)void", method "mint_vip_nft(string,string,string)uint64", method "transfer(address,uint64)void", method "enable_trading()void", method "balance_of(address)uint64"
     txna ApplicationArgs 0
-    match create_token mine mint_nft
+    match renounce_central_authority record_immutable_data verify_secure_payload stake_tokens create_proposal vote_on_proposal create_automated_escrow execute_automated_settlement mint_vip_nft transfer enable_trading balance_of
     err
 
-main___algopy_default_create@10:
-    txn OnCompletion
-    !
-    txn ApplicationID
-    !
-    &&
-    return
+main_create_NoOp@18:
+    // smart_contracts/leviathan_token/contract.py:23
+    // class LeviathanToken(ARC4Contract):
+    pushbytes 0x4c5c61ba // method "create()void"
+    txna ApplicationArgs 0
+    match create
+    err
 
 
-// smart_contracts.leviathan_token.contract.LeviathanToken.create_token[routing]() -> void:
-create_token:
-    // smart_contracts/leviathan_token/contract.py:14
-    // @abimethod()
-    txna ApplicationArgs 1
-    dup
-    len
-    pushint 8
-    ==
-    assert // invalid number of bytes for arc4.uint64
-    txna ApplicationArgs 2
-    dup
+// smart_contracts.leviathan_token.contract.LeviathanToken.create[routing]() -> void:
+create:
+    // smart_contracts/leviathan_token/contract.py:65
+    // self.admin.value = Txn.sender
+    bytec_0 // "admin"
+    txn Sender
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:66
+    // self.tax_wallet.value = Txn.sender
+    bytec 11 // "tax_wallet"
+    txn Sender
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:67
+    // self.max_transaction_amount.value = (self.total_supply * UInt64(2)) // UInt64(100)
     intc_0 // 0
-    extract_uint16 // on error: invalid array length header
-    intc_1 // 2
-    +
-    dig 1
-    len
-    ==
-    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
-    extract 2 0
-    txna ApplicationArgs 3
-    dup
-    intc_0 // 0
-    extract_uint16 // on error: invalid array length header
-    intc_1 // 2
-    +
-    dig 1
-    len
-    ==
-    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
-    extract 2 0
-    txna ApplicationArgs 4
-    dup
-    intc_0 // 0
-    extract_uint16 // on error: invalid array length header
-    intc_1 // 2
-    +
-    dig 1
-    len
-    ==
-    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
-    extract 2 0
-    // smart_contracts/leviathan_token/contract.py:23-35
-    // # Create the ASA (Algorand Standard Asset)
-    // itxn.AssetConfig(
-    //     total=max_supply.as_uint64(),
-    //     decimals=6,
-    //     unit_name=unit_name,
-    //     asset_name=asset_name,
-    //     url=url,
-    //     default_frozen=False,
-    //     manager=Global.current_application_address,
-    //     reserve=Global.current_application_address,
-    //     freeze=Global.current_application_address,
-    //     clawback=Global.current_application_address,
-    // ).submit()
-    itxn_begin
-    // smart_contracts/leviathan_token/contract.py:25
-    // total=max_supply.as_uint64(),
-    uncover 3
-    btoi
-    // smart_contracts/leviathan_token/contract.py:31
-    // manager=Global.current_application_address,
-    global CurrentApplicationAddress
-    // smart_contracts/leviathan_token/contract.py:32-34
-    // reserve=Global.current_application_address,
-    // freeze=Global.current_application_address,
-    // clawback=Global.current_application_address,
-    dupn 3
-    itxn_field ConfigAssetClawback
-    itxn_field ConfigAssetFreeze
-    itxn_field ConfigAssetReserve
-    itxn_field ConfigAssetManager
-    // smart_contracts/leviathan_token/contract.py:30
-    // default_frozen=False,
-    intc_0 // 0
-    itxn_field ConfigAssetDefaultFrozen
+    bytec_3 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    intc_2 // 2
+    *
+    pushint 100
+    /
+    bytec 6 // "max_transaction_amount"
     swap
-    itxn_field ConfigAssetURL
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:68
+    // self.max_wallet_amount.value = (self.total_supply * UInt64(3)) // UInt64(100)
+    intc_0 // 0
+    bytec_3 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    pushint 3
+    *
+    pushint 100
+    /
+    bytec 7 // "max_wallet_amount"
     swap
-    itxn_field ConfigAssetName
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:70-71
+    // # Mint all tokens to creator initially
+    // self.balances[Txn.sender] = self.total_supply
+    intc_0 // 0
+    bytec_3 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    bytec_1 // "balances"
+    txn Sender
+    concat
     swap
-    itxn_field ConfigAssetUnitName
-    // smart_contracts/leviathan_token/contract.py:26
-    // decimals=6,
-    pushint 6
-    itxn_field ConfigAssetDecimals
-    itxn_field ConfigAssetTotal
-    // smart_contracts/leviathan_token/contract.py:23-24
-    // # Create the ASA (Algorand Standard Asset)
-    // itxn.AssetConfig(
-    intc_3 // acfg
-    itxn_field TypeEnum
-    intc_0 // 0
-    itxn_field Fee
-    // smart_contracts/leviathan_token/contract.py:23-35
-    // # Create the ASA (Algorand Standard Asset)
-    // itxn.AssetConfig(
-    //     total=max_supply.as_uint64(),
-    //     decimals=6,
-    //     unit_name=unit_name,
-    //     asset_name=asset_name,
-    //     url=url,
-    //     default_frozen=False,
-    //     manager=Global.current_application_address,
-    //     reserve=Global.current_application_address,
-    //     freeze=Global.current_application_address,
-    //     clawback=Global.current_application_address,
-    // ).submit()
-    itxn_submit
-    // smart_contracts/leviathan_token/contract.py:14
-    // @abimethod()
-    intc_2 // 1
-    return
-
-
-// smart_contracts.leviathan_token.contract.LeviathanToken.mine[routing]() -> void:
-mine:
-    // smart_contracts/leviathan_token/contract.py:37
-    // @abimethod()
-    txna ApplicationArgs 1
-    len
-    pushint 32
-    ==
-    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    pushbytes 0x151f7c7500000000000f4240
-    log
-    intc_2 // 1
-    return
-
-
-// smart_contracts.leviathan_token.contract.LeviathanToken.mint_nft[routing]() -> void:
-mint_nft:
-    // smart_contracts/leviathan_token/contract.py:46
-    // @abimethod()
-    txna ApplicationArgs 1
-    dup
-    len
-    pushint 32
-    ==
-    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    txna ApplicationArgs 2
-    dup
-    intc_0 // 0
-    extract_uint16 // on error: invalid array length header
-    intc_1 // 2
-    +
-    dig 1
-    len
-    ==
-    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
-    extract 2 0
-    txna ApplicationArgs 3
-    dup
-    intc_0 // 0
-    extract_uint16 // on error: invalid array length header
-    intc_1 // 2
-    +
-    dig 1
-    len
-    ==
-    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
-    extract 2 0
-    // smart_contracts/leviathan_token/contract.py:54-66
-    // # Create NFT (Asset with total=1)
-    // result = itxn.AssetConfig(
-    //     total=1,
-    //     decimals=0,
-    //     unit_name="LEVI",
-    //     asset_name=nft_name,
-    //     url=nft_url,
-    //     default_frozen=False,
-    //     manager=Global.current_application_address,
-    //     reserve=Global.current_application_address,
-    //     freeze=Global.current_application_address,
-    //     clawback=Global.current_application_address,
-    // ).submit()
-    itxn_begin
-    // smart_contracts/leviathan_token/contract.py:62
-    // manager=Global.current_application_address,
-    global CurrentApplicationAddress
-    // smart_contracts/leviathan_token/contract.py:63-65
-    // reserve=Global.current_application_address,
-    // freeze=Global.current_application_address,
-    // clawback=Global.current_application_address,
-    dupn 3
-    itxn_field ConfigAssetClawback
-    itxn_field ConfigAssetFreeze
-    itxn_field ConfigAssetReserve
-    itxn_field ConfigAssetManager
-    // smart_contracts/leviathan_token/contract.py:61
-    // default_frozen=False,
-    intc_0 // 0
-    itxn_field ConfigAssetDefaultFrozen
-    itxn_field ConfigAssetURL
-    itxn_field ConfigAssetName
-    // smart_contracts/leviathan_token/contract.py:58
-    // unit_name="LEVI",
-    pushbytes "LEVI"
-    itxn_field ConfigAssetUnitName
-    // smart_contracts/leviathan_token/contract.py:57
-    // decimals=0,
-    intc_0 // 0
-    itxn_field ConfigAssetDecimals
-    // smart_contracts/leviathan_token/contract.py:56
-    // total=1,
-    intc_2 // 1
-    itxn_field ConfigAssetTotal
-    // smart_contracts/leviathan_token/contract.py:54-55
-    // # Create NFT (Asset with total=1)
-    // result = itxn.AssetConfig(
-    intc_3 // acfg
-    itxn_field TypeEnum
-    intc_0 // 0
-    itxn_field Fee
-    // smart_contracts/leviathan_token/contract.py:54-66
-    // # Create NFT (Asset with total=1)
-    // result = itxn.AssetConfig(
-    //     total=1,
-    //     decimals=0,
-    //     unit_name="LEVI",
-    //     asset_name=nft_name,
-    //     url=nft_url,
-    //     default_frozen=False,
-    //     manager=Global.current_application_address,
-    //     reserve=Global.current_application_address,
-    //     freeze=Global.current_application_address,
-    //     clawback=Global.current_application_address,
-    // ).submit()
-    itxn_submit
-    itxn CreatedAssetID
-    // smart_contracts/leviathan_token/contract.py:71-76
-    // # Transfer NFT to minter
-    // itxn.AssetTransfer(
-    //     xfer_asset=nft_id,
-    //     asset_receiver=minter.native,
-    //     asset_amount=1,
-    // ).submit()
-    itxn_begin
-    // smart_contracts/leviathan_token/contract.py:75
-    // asset_amount=1,
-    intc_2 // 1
-    itxn_field AssetAmount
-    swap
-    itxn_field AssetReceiver
-    dup
-    itxn_field XferAsset
-    // smart_contracts/leviathan_token/contract.py:71-72
-    // # Transfer NFT to minter
-    // itxn.AssetTransfer(
-    pushint 4 // axfer
-    itxn_field TypeEnum
-    intc_0 // 0
-    itxn_field Fee
-    // smart_contracts/leviathan_token/contract.py:71-76
-    // # Transfer NFT to minter
-    // itxn.AssetTransfer(
-    //     xfer_asset=nft_id,
-    //     asset_receiver=minter.native,
-    //     asset_amount=1,
-    // ).submit()
-    itxn_submit
-    // smart_contracts/leviathan_token/contract.py:78
-    // return arc4.UInt64(nft_id)
     itob
-    // smart_contracts/leviathan_token/contract.py:46
-    // @abimethod()
-    pushbytes 0x151f7c75
+    box_put
+    // smart_contracts/leviathan_token/contract.py:62
+    // @arc4.abimethod(create="require")
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.renounce_central_authority[routing]() -> void:
+renounce_central_authority:
+    // smart_contracts/leviathan_token/contract.py:79
+    // assert Txn.sender == self.admin.value, "Only admin"
+    txn Sender
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    ==
+    assert // Only admin
+    // smart_contracts/leviathan_token/contract.py:80
+    // self.is_decentralized.value = UInt64(1)
+    bytec 13 // "is_decentralized"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:81
+    // self.admin.value = Global.zero_address
+    bytec_0 // "admin"
+    global ZeroAddress
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:73-76
+    // # ==========================================
+    // # [1] DECENTRALIZATION
+    // # ==========================================
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.record_immutable_data[routing]() -> void:
+record_immutable_data:
+    // smart_contracts/leviathan_token/contract.py:83-86
+    // # ==========================================
+    // # [2] IMMUTABILITY & [6] SECURITY
+    // # ==========================================
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/leviathan_token/contract.py:89
+    // assert document_hash not in self.immutable_records, "Record already exists"
+    pushbytes "immutable_records"
+    uncover 2
+    concat
+    dup
+    box_len
+    bury 1
+    !
+    assert // Record already exists
+    // smart_contracts/leviathan_token/contract.py:90
+    // self.immutable_records[document_hash] = data_uri
+    dup
+    box_del
+    pop
+    swap
+    box_put
+    // smart_contracts/leviathan_token/contract.py:83-86
+    // # ==========================================
+    // # [2] IMMUTABILITY & [6] SECURITY
+    // # ==========================================
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.verify_secure_payload[routing]() -> void:
+verify_secure_payload:
+    // smart_contracts/leviathan_token/contract.py:92
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/leviathan_token/contract.py:95
+    // return op.sha256(raw_data) == expected_hash
+    swap
+    sha256
+    ==
+    // smart_contracts/leviathan_token/contract.py:92
+    // @arc4.abimethod
+    pushbytes 0x00
+    intc_0 // 0
+    uncover 2
+    setbit
+    bytec_2 // 0x151f7c75
     swap
     concat
     log
-    intc_2 // 1
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.stake_tokens[routing]() -> void:
+stake_tokens:
+    // smart_contracts/leviathan_token/contract.py:97-100
+    // # ==========================================
+    // # [3] CONSENSUS & DAO GOVERNANCE
+    // # ==========================================
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/leviathan_token/contract.py:102
+    // current_bal = self.balances.get(Txn.sender, default=UInt64(0))
+    bytec_1 // "balances"
+    txn Sender
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:103
+    // assert current_bal >= amount, "Insufficient balance"
+    dup
+    dig 2
+    >=
+    assert // Insufficient balance
+    // smart_contracts/leviathan_token/contract.py:105
+    // self.balances[Txn.sender] = current_bal - amount
+    dig 1
+    -
+    bytec_1 // "balances"
+    txn Sender
+    concat
+    swap
+    itob
+    box_put
+    // smart_contracts/leviathan_token/contract.py:106
+    // current_stake = self.staked_balances.get(Txn.sender, default=UInt64(0))
+    bytec 12 // "staked_balances"
+    txn Sender
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:107
+    // self.staked_balances[Txn.sender] = current_stake + amount
+    dig 1
+    +
+    bytec 12 // "staked_balances"
+    txn Sender
+    concat
+    swap
+    itob
+    box_put
+    // smart_contracts/leviathan_token/contract.py:108
+    // self.total_staked.value += amount
+    intc_0 // 0
+    bytec 9 // "total_staked"
+    app_global_get_ex
+    assert // check self.total_staked exists
+    +
+    bytec 9 // "total_staked"
+    swap
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:97-100
+    // # ==========================================
+    // # [3] CONSENSUS & DAO GOVERNANCE
+    // # ==========================================
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.create_proposal[routing]() -> void:
+create_proposal:
+    // smart_contracts/leviathan_token/contract.py:110
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/leviathan_token/contract.py:112
+    // assert Txn.sender == self.admin.value, "Only admin"
+    txn Sender
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    ==
+    assert // Only admin
+    // smart_contracts/leviathan_token/contract.py:113
+    // current_id = self.proposal_count.value
+    intc_0 // 0
+    bytec 4 // "proposal_count"
+    app_global_get_ex
+    assert // check self.proposal_count exists
+    // smart_contracts/leviathan_token/contract.py:114
+    // self.proposal_desc[current_id] = description
+    dup
+    itob
+    pushbytes "proposal_desc"
+    dig 1
+    concat
+    dup
+    box_del
+    pop
+    uncover 3
+    box_put
+    // smart_contracts/leviathan_token/contract.py:115
+    // self.proposal_yes[current_id] = UInt64(0)
+    bytec 16 // "proposal_yes"
+    dig 1
+    concat
+    intc_0 // 0
+    itob
+    swap
+    dig 1
+    box_put
+    // smart_contracts/leviathan_token/contract.py:116
+    // self.proposal_no[current_id] = UInt64(0)
+    bytec 17 // "proposal_no"
+    dig 2
+    concat
+    swap
+    box_put
+    // smart_contracts/leviathan_token/contract.py:117
+    // self.proposal_count.value = current_id + 1
+    swap
+    intc_1 // 1
+    +
+    bytec 4 // "proposal_count"
+    swap
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:110
+    // @arc4.abimethod
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.vote_on_proposal[routing]() -> void:
+vote_on_proposal:
+    // smart_contracts/leviathan_token/contract.py:120
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    dup
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_1 // 1
+    ==
+    assert // invalid number of bytes for arc4.bool
+    intc_0 // 0
+    getbit
+    // smart_contracts/leviathan_token/contract.py:122
+    // assert proposal_id < self.proposal_count.value, "Invalid proposal"
+    intc_0 // 0
+    bytec 4 // "proposal_count"
+    app_global_get_ex
+    assert // check self.proposal_count exists
+    uncover 2
+    >
+    assert // Invalid proposal
+    // smart_contracts/leviathan_token/contract.py:123
+    // voting_weight = self.staked_balances.get(Txn.sender, default=UInt64(0))
+    bytec 12 // "staked_balances"
+    txn Sender
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    dup
+    cover 2
+    // smart_contracts/leviathan_token/contract.py:124
+    // assert voting_weight > 0, "Must be staked to vote"
+    assert // Must be staked to vote
+    // smart_contracts/leviathan_token/contract.py:126
+    // if vote_yes:
+    bz vote_on_proposal_else_body@3
+    // smart_contracts/leviathan_token/contract.py:127
+    // current = self.proposal_yes.get(proposal_id, default=UInt64(0))
+    dig 1
+    itob
+    bytec 16 // "proposal_yes"
+    swap
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:128
+    // self.proposal_yes[proposal_id] = current + voting_weight
+    uncover 2
+    +
+    itob
+    box_put
+
+vote_on_proposal_after_if_else@4:
+    // smart_contracts/leviathan_token/contract.py:120
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+vote_on_proposal_else_body@3:
+    // smart_contracts/leviathan_token/contract.py:130
+    // current = self.proposal_no.get(proposal_id, default=UInt64(0))
+    dig 1
+    itob
+    bytec 17 // "proposal_no"
+    swap
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:131
+    // self.proposal_no[proposal_id] = current + voting_weight
+    uncover 2
+    +
+    itob
+    box_put
+    b vote_on_proposal_after_if_else@4
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.create_automated_escrow[routing]() -> void:
+create_automated_escrow:
+    // smart_contracts/leviathan_token/contract.py:133-136
+    // # ==========================================
+    // # [4] SMART CONTRACTS & [7] FASTER SETTLEMENTS
+    // # ==========================================
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    dup
+    btoi
+    txna ApplicationArgs 3
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/leviathan_token/contract.py:138
+    // sender_bal = self.balances.get(Txn.sender, default=UInt64(0))
+    bytec_1 // "balances"
+    txn Sender
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:139
+    // assert sender_bal >= amount, "Insufficient balance"
+    dup
+    dig 3
+    >=
+    assert // Insufficient balance
+    // smart_contracts/leviathan_token/contract.py:141
+    // self.balances[Txn.sender] = sender_bal - amount
+    uncover 2
+    -
+    bytec_1 // "balances"
+    txn Sender
+    concat
+    swap
+    itob
+    box_put
+    // smart_contracts/leviathan_token/contract.py:142
+    // unlock_time = Global.latest_timestamp + lock_duration
+    global LatestTimestamp
+    +
+    // smart_contracts/leviathan_token/contract.py:144
+    // escrow_id = self.escrow_nonce.value
+    intc_0 // 0
+    bytec 10 // "escrow_nonce"
+    app_global_get_ex
+    assert // check self.escrow_nonce exists
+    // smart_contracts/leviathan_token/contract.py:147
+    // arc4.UInt64(unlock_time),
+    swap
+    itob
+    // smart_contracts/leviathan_token/contract.py:145-149
+    // self.escrows[escrow_id] = TimeLockEscrow(
+    //     arc4.UInt64(amount),
+    //     arc4.UInt64(unlock_time),
+    //     arc4.Address(receiver)
+    // )
+    uncover 2
+    swap
+    concat
+    uncover 2
+    concat
+    // smart_contracts/leviathan_token/contract.py:145
+    // self.escrows[escrow_id] = TimeLockEscrow(
+    dig 1
+    itob
+    bytec 18 // "escrows"
+    dig 1
+    concat
+    // smart_contracts/leviathan_token/contract.py:145-149
+    // self.escrows[escrow_id] = TimeLockEscrow(
+    //     arc4.UInt64(amount),
+    //     arc4.UInt64(unlock_time),
+    //     arc4.Address(receiver)
+    // )
+    uncover 2
+    box_put
+    // smart_contracts/leviathan_token/contract.py:150
+    // self.escrow_nonce.value = escrow_id + 1
+    swap
+    intc_1 // 1
+    +
+    bytec 10 // "escrow_nonce"
+    swap
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:133-136
+    // # ==========================================
+    // # [4] SMART CONTRACTS & [7] FASTER SETTLEMENTS
+    // # ==========================================
+    // @arc4.abimethod
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.execute_automated_settlement[routing]() -> void:
+execute_automated_settlement:
+    // smart_contracts/leviathan_token/contract.py:153
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/leviathan_token/contract.py:155
+    // assert escrow_id in self.escrows, "Escrow not found"
+    itob
+    bytec 18 // "escrows"
+    swap
+    concat
+    dup
+    box_len
+    bury 1
+    assert // Escrow not found
+    // smart_contracts/leviathan_token/contract.py:156
+    // escrow = self.escrows[escrow_id].copy()
+    dup
+    box_get
+    pop
+    // smart_contracts/leviathan_token/contract.py:157
+    // assert Global.latest_timestamp >= escrow.unlock_time.native, "Time lock active"
+    global LatestTimestamp
+    dig 1
+    intc_3 // 8
+    extract_uint64
+    >=
+    assert // Time lock active
+    // smart_contracts/leviathan_token/contract.py:159
+    // receiver_account = escrow.receiver.native
+    dup
+    extract 16 32
+    // smart_contracts/leviathan_token/contract.py:160
+    // current_bal = self.balances.get(receiver_account, default=UInt64(0))
+    bytec_1 // "balances"
+    swap
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:161
+    // self.balances[receiver_account] = current_bal + escrow.amount.native
+    uncover 2
+    intc_0 // 0
+    extract_uint64
+    +
+    itob
+    box_put
+    // smart_contracts/leviathan_token/contract.py:163
+    // del self.escrows[escrow_id] # Clean up state
+    box_del
+    pop
+    // smart_contracts/leviathan_token/contract.py:153
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.mint_vip_nft[routing]() -> void:
+mint_vip_nft:
+    // smart_contracts/leviathan_token/contract.py:165-168
+    // # ==========================================
+    // # NATIVE NFT ENGINE
+    // # ==========================================
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 3
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/leviathan_token/contract.py:170
+    // assert Txn.sender == self.admin.value, "Only admin"
+    txn Sender
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    ==
+    assert // Only admin
+    // smart_contracts/leviathan_token/contract.py:171-179
+    // nft_txn = itxn.AssetConfig(
+    //     total=1, decimals=0, default_frozen=False,
+    //     asset_name=asset_name, unit_name=unit_name, url=url,
+    //     manager=Global.current_application_address,
+    //     reserve=Global.current_application_address,
+    //     freeze=Global.current_application_address,
+    //     clawback=Global.current_application_address,
+    //     fee=0
+    // ).submit()
+    itxn_begin
+    // smart_contracts/leviathan_token/contract.py:174
+    // manager=Global.current_application_address,
+    global CurrentApplicationAddress
+    // smart_contracts/leviathan_token/contract.py:175-177
+    // reserve=Global.current_application_address,
+    // freeze=Global.current_application_address,
+    // clawback=Global.current_application_address,
+    dupn 3
+    itxn_field ConfigAssetClawback
+    itxn_field ConfigAssetFreeze
+    itxn_field ConfigAssetReserve
+    itxn_field ConfigAssetManager
+    itxn_field ConfigAssetURL
+    itxn_field ConfigAssetUnitName
+    itxn_field ConfigAssetName
+    // smart_contracts/leviathan_token/contract.py:172
+    // total=1, decimals=0, default_frozen=False,
+    intc_0 // 0
+    itxn_field ConfigAssetDefaultFrozen
+    intc_0 // 0
+    itxn_field ConfigAssetDecimals
+    intc_1 // 1
+    itxn_field ConfigAssetTotal
+    // smart_contracts/leviathan_token/contract.py:171
+    // nft_txn = itxn.AssetConfig(
+    pushint 3 // acfg
+    itxn_field TypeEnum
+    // smart_contracts/leviathan_token/contract.py:178
+    // fee=0
+    intc_0 // 0
+    itxn_field Fee
+    // smart_contracts/leviathan_token/contract.py:171-179
+    // nft_txn = itxn.AssetConfig(
+    //     total=1, decimals=0, default_frozen=False,
+    //     asset_name=asset_name, unit_name=unit_name, url=url,
+    //     manager=Global.current_application_address,
+    //     reserve=Global.current_application_address,
+    //     freeze=Global.current_application_address,
+    //     clawback=Global.current_application_address,
+    //     fee=0
+    // ).submit()
+    itxn_submit
+    itxn CreatedAssetID
+    // smart_contracts/leviathan_token/contract.py:165-168
+    // # ==========================================
+    // # NATIVE NFT ENGINE
+    // # ==========================================
+    // @arc4.abimethod
+    itob
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.transfer[routing]() -> void:
+transfer:
+    intc_0 // 0
+    pushbytes ""
+    dupn 3
+    // smart_contracts/leviathan_token/contract.py:182-185
+    // # ==========================================
+    // # CORE TOKEN LOGIC
+    // # ==========================================
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_3 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/leviathan_token/contract.py:187
+    // self._transfer(Txn.sender, receiver, amount)
+    txn Sender
+    dup
+    // smart_contracts/leviathan_token/contract.py:191
+    // assert sender != Global.zero_address and receiver != Global.zero_address, "Invalid address"
+    global ZeroAddress
+    !=
+    bz transfer_bool_false@4
+    dig 2
+    global ZeroAddress
+    !=
+    bz transfer_bool_false@4
+    intc_1 // 1
+
+transfer_bool_merge@5:
+    // smart_contracts/leviathan_token/contract.py:191
+    // assert sender != Global.zero_address and receiver != Global.zero_address, "Invalid address"
+    assert // Invalid address
+    // smart_contracts/leviathan_token/contract.py:192
+    // from_balance = self.balances.get(sender, default=UInt64(0))
+    bytec_1 // "balances"
+    dig 1
+    dup
+    cover 2
+    concat
+    dup
+    bury 10
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    dup
+    bury 9
+    // smart_contracts/leviathan_token/contract.py:193
+    // assert from_balance >= amount, "Insufficient balance"
+    dig 3
+    >=
+    assert // Insufficient balance
+    // smart_contracts/leviathan_token/contract.py:195
+    // assert self.blacklisted.get(sender, default=UInt64(0)) == 0, "Sender blacklisted"
+    bytec 19 // "blacklisted"
+    dig 1
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    !
+    assert // Sender blacklisted
+    // smart_contracts/leviathan_token/contract.py:196
+    // assert self.blacklisted.get(receiver, default=UInt64(0)) == 0, "Receiver blacklisted"
+    bytec 19 // "blacklisted"
+    dig 4
+    dup
+    cover 2
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    !
+    assert // Receiver blacklisted
+    // smart_contracts/leviathan_token/contract.py:198
+    // is_receiver_amm = self.amm_pools.get(receiver, default=UInt64(0)) == 1
+    bytec 20 // "amm_pools"
+    swap
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    intc_1 // 1
+    ==
+    bury 7
+    // smart_contracts/leviathan_token/contract.py:199
+    // is_sender_amm = self.amm_pools.get(sender, default=UInt64(0)) == 1
+    bytec 20 // "amm_pools"
+    dig 1
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    intc_1 // 1
+    ==
+    bury 6
+    // smart_contracts/leviathan_token/contract.py:201
+    // if sender != self.admin.value and receiver != self.admin.value:
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    !=
+    bz transfer_after_if_else@8
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 3
+    !=
+    bz transfer_after_if_else@8
+    // smart_contracts/leviathan_token/contract.py:202
+    // assert self.trading_enabled.value == 1, "Trading not enabled"
+    intc_0 // 0
+    bytec 8 // "trading_enabled"
+    app_global_get_ex
+    assert // check self.trading_enabled exists
+    intc_1 // 1
+    ==
+    assert // Trading not enabled
+
+transfer_after_if_else@8:
+    // smart_contracts/leviathan_token/contract.py:204
+    // if not is_receiver_amm and receiver != self.admin.value and sender != self.admin.value:
+    dig 5
+    bnz transfer_after_if_else@12
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 3
+    !=
+    bz transfer_after_if_else@12
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 1
+    !=
+    bz transfer_after_if_else@12
+    // smart_contracts/leviathan_token/contract.py:205
+    // assert amount <= self.max_transaction_amount.value, "Exceeds max tx limit"
+    intc_0 // 0
+    bytec 6 // "max_transaction_amount"
+    app_global_get_ex
+    assert // check self.max_transaction_amount exists
+    dig 2
+    >=
+    assert // Exceeds max tx limit
+
+transfer_after_if_else@12:
+    // smart_contracts/leviathan_token/contract.py:207
+    // if not is_receiver_amm and receiver != self.admin.value:
+    dig 5
+    bnz transfer_after_if_else@15
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 3
+    !=
+    bz transfer_after_if_else@15
+    // smart_contracts/leviathan_token/contract.py:208
+    // to_balance = self.balances.get(receiver, default=UInt64(0))
+    bytec_1 // "balances"
+    dig 3
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:209
+    // assert to_balance + amount <= self.max_wallet_amount.value, "Exceeds max wallet limit"
+    dig 2
+    +
+    intc_0 // 0
+    bytec 7 // "max_wallet_amount"
+    app_global_get_ex
+    assert // check self.max_wallet_amount exists
+    <=
+    assert // Exceeds max wallet limit
+
+transfer_after_if_else@15:
+    // smart_contracts/leviathan_token/contract.py:211
+    // if self.cooldown_enabled.value == 1 and is_sender_amm and receiver != self.admin.value:
+    intc_0 // 0
+    bytec 14 // "cooldown_enabled"
+    app_global_get_ex
+    assert // check self.cooldown_enabled exists
+    intc_1 // 1
+    ==
+    bz transfer_after_if_else@19
+    dig 4
+    bz transfer_after_if_else@19
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 3
+    !=
+    bz transfer_after_if_else@19
+    // smart_contracts/leviathan_token/contract.py:212
+    // last_trade_time = self.last_trade.get(receiver, default=UInt64(0))
+    pushbytes "last_trade"
+    dig 3
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:213
+    // assert last_trade_time + self.trade_cooldown.value <= Global.latest_timestamp, "Cooldown active"
+    intc_0 // 0
+    bytec 15 // "trade_cooldown"
+    app_global_get_ex
+    assert // check self.trade_cooldown exists
+    +
+    global LatestTimestamp
+    <=
+    assert // Cooldown active
+    // smart_contracts/leviathan_token/contract.py:214
+    // self.last_trade[receiver] = Global.latest_timestamp
+    global LatestTimestamp
+    itob
+    box_put
+
+transfer_after_if_else@19:
+    // smart_contracts/leviathan_token/contract.py:216
+    // tax_amount = UInt64(0)
+    intc_0 // 0
+    bury 4
+    // smart_contracts/leviathan_token/contract.py:217
+    // if self.transfer_tax_rate.value > 0 and self.tax_wallet.value != Global.zero_address:
+    intc_0 // 0
+    bytec 5 // "transfer_tax_rate"
+    app_global_get_ex
+    assert // check self.transfer_tax_rate exists
+    bz transfer_after_if_else@28
+    intc_0 // 0
+    bytec 11 // "tax_wallet"
+    app_global_get_ex
+    assert // check self.tax_wallet exists
+    global ZeroAddress
+    !=
+    bz transfer_after_if_else@28
+    // smart_contracts/leviathan_token/contract.py:218
+    // if sender != self.admin.value and receiver != self.admin.value:
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 1
+    !=
+    bz transfer_after_if_else@28
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    dig 3
+    !=
+    bz transfer_after_if_else@28
+    // smart_contracts/leviathan_token/contract.py:219
+    // if is_sender_amm or is_receiver_amm:
+    dig 4
+    bnz transfer_if_body@25
+    dig 5
+    bz transfer_after_if_else@28
+
+transfer_if_body@25:
+    // smart_contracts/leviathan_token/contract.py:220
+    // tax_amount = (amount * self.transfer_tax_rate.value) // UInt64(100)
+    intc_0 // 0
+    bytec 5 // "transfer_tax_rate"
+    app_global_get_ex
+    assert // check self.transfer_tax_rate exists
+    dig 2
+    *
+    pushint 100
+    /
+    bury 4
+
+transfer_after_if_else@28:
+    // smart_contracts/leviathan_token/contract.py:222
+    // self.balances[sender] = from_balance - amount
+    dig 6
+    dig 2
+    -
+    itob
+    dig 8
+    swap
+    box_put
+    // smart_contracts/leviathan_token/contract.py:223
+    // if tax_amount > 0:
+    dig 3
+    bz transfer_else_body@30
+    // smart_contracts/leviathan_token/contract.py:224
+    // tax_wallet_bal = self.balances.get(self.tax_wallet.value, default=UInt64(0))
+    intc_0 // 0
+    bytec 11 // "tax_wallet"
+    app_global_get_ex
+    assert // check self.tax_wallet exists
+    bytec_1 // "balances"
+    swap
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:225
+    // self.balances[self.tax_wallet.value] = tax_wallet_bal + tax_amount
+    dig 5
+    dup
+    cover 2
+    +
+    itob
+    uncover 2
+    swap
+    box_put
+    // smart_contracts/leviathan_token/contract.py:226
+    // receive_amount = amount - tax_amount
+    dig 2
+    swap
+    -
+    // smart_contracts/leviathan_token/contract.py:227
+    // to_bal = self.balances.get(receiver, default=UInt64(0))
+    bytec_1 // "balances"
+    dig 4
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:228
+    // self.balances[receiver] = to_bal + receive_amount
+    uncover 2
+    +
+    itob
+    box_put
+
+transfer_after_if_else@31:
+    // smart_contracts/leviathan_token/contract.py:182-185
+    // # ==========================================
+    // # CORE TOKEN LOGIC
+    // # ==========================================
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+transfer_else_body@30:
+    // smart_contracts/leviathan_token/contract.py:230
+    // to_bal = self.balances.get(receiver, default=UInt64(0))
+    bytec_1 // "balances"
+    dig 3
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:231
+    // self.balances[receiver] = to_bal + amount
+    dig 3
+    +
+    itob
+    box_put
+    b transfer_after_if_else@31
+
+transfer_bool_false@4:
+    intc_0 // 0
+    b transfer_bool_merge@5
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.enable_trading[routing]() -> void:
+enable_trading:
+    // smart_contracts/leviathan_token/contract.py:235
+    // assert Txn.sender == self.admin.value, "Only admin"
+    txn Sender
+    intc_0 // 0
+    bytec_0 // "admin"
+    app_global_get_ex
+    assert // check self.admin exists
+    ==
+    assert // Only admin
+    // smart_contracts/leviathan_token/contract.py:236
+    // self.trading_enabled.value = UInt64(1)
+    bytec 8 // "trading_enabled"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/leviathan_token/contract.py:233
+    // @arc4.abimethod
+    intc_1 // 1
+    return
+
+
+// smart_contracts.leviathan_token.contract.LeviathanToken.balance_of[routing]() -> void:
+balance_of:
+    // smart_contracts/leviathan_token/contract.py:238
+    // @arc4.abimethod(readonly=True)
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // smart_contracts/leviathan_token/contract.py:240
+    // return self.balances.get(account, default=UInt64(0))
+    bytec_1 // "balances"
+    swap
+    concat
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // smart_contracts/leviathan_token/contract.py:238
+    // @arc4.abimethod(readonly=True)
+    itob
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
     return
