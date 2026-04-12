@@ -1,6 +1,10 @@
 import { SupportedWallet, WalletId, WalletManager, WalletProvider } from '@txnlab/use-wallet-react'
 import { SnackbarProvider } from 'notistack'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import Home from './Home'
+import NavigationMenu from './components/NavigationMenu'
+import HardwareBenchmarkDashboard from './pages/HardwareBenchmarkDashboard'
+import WsQaoaConsole from './pages/WsQaoaConsole'
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 
 let supportedWallets: SupportedWallet[]
@@ -17,13 +21,7 @@ if (import.meta.env.VITE_ALGOD_NETWORK === 'localnet') {
     },
   ]
 } else {
-  supportedWallets = [
-    { id: WalletId.DEFLY },
-    { id: WalletId.PERA },
-    { id: WalletId.EXODUS },
-    // If you are interested in WalletConnect v2 provider
-    // refer to https://github.com/TxnLab/use-wallet for detailed integration instructions
-  ]
+  supportedWallets = [{ id: WalletId.DEFLY }, { id: WalletId.PERA }, { id: WalletId.EXODUS }]
 }
 
 export default function App() {
@@ -49,7 +47,14 @@ export default function App() {
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider manager={walletManager}>
-        <Home />
+        <Router>
+          <NavigationMenu />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/hardware-benchmark" element={<HardwareBenchmarkDashboard />} />
+            <Route path="/console/ws-qaoa" element={<WsQaoaConsole />} />
+          </Routes>
+        </Router>
       </WalletProvider>
     </SnackbarProvider>
   )

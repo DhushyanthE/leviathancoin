@@ -42,9 +42,15 @@ export function BFTDashboard({ baseUrl = 'http://localhost:3001', autoRefresh = 
   useEffect(() => {
     fetchData()
 
+    let interval: NodeJS.Timeout | undefined
     if (autoRefresh) {
-      const interval = setInterval(fetchData, refreshInterval)
-      return () => clearInterval(interval)
+      interval = setInterval(fetchData, refreshInterval)
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval)
+      }
     }
   }, [fetchData, autoRefresh, refreshInterval])
 

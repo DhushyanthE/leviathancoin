@@ -9,6 +9,17 @@
       "key": "baseUrl",
       "value": "http://localhost:3001/api",
       "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "lv_live_YOUR_MASTER_KEY_HERE",
+      "description": "Paste your master API key here. Generated on first server boot and printed to the console.",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "your-wallet-address-or-user-id",
+      "type": "string"
     }
   ],
   "item": [
@@ -18,6 +29,107 @@
         "method": "GET",
         "url": "{{baseUrl}}/health"
       }
+    },
+    {
+      "name": "🔑 API Key Management",
+      "description": "Endpoints for generating, validating, listing, and revoking API keys. All protected routes require an x-api-key header.",
+      "item": [
+        {
+          "name": "List Available Scopes (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/keys/scopes",
+            "description": "Returns all valid permission scopes and their descriptions. No auth required."
+          }
+        },
+        {
+          "name": "Validate Key (Echo Identity)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/validate",
+            "description": "Test that your API key is valid. Returns userId, scopes, rate-limit info."
+          }
+        },
+        {
+          "name": "Generate API Key (Master Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"label\": \"My CI Pipeline Key\",\n  \"scopes\": [\"dao:read\", \"staking:read\", \"mining:read\"],\n  \"rateLimit\": 100,\n  \"expiresInDays\": 90\n}"
+            },
+            "description": "Creates a new API key. The raw key is returned ONCE in the response — copy it immediately."
+          }
+        },
+        {
+          "name": "Generate Wildcard Key (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"label\": \"Admin Master Key\",\n  \"scopes\": [\"*\"],\n  \"rateLimit\": 1000,\n  \"expiresInDays\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "List Keys for User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/list/{{userId}}",
+            "description": "Returns all key metadata (truncated identifiers, scopes, usage stats) for a userId. No raw keys."
+          }
+        },
+        {
+          "name": "List All Keys (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/admin/all",
+            "description": "Returns all keys in the system. Requires wildcard (*) scope."
+          }
+        },
+        {
+          "name": "Revoke a Key",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/KEY_ID_HERE/revoke",
+            "description": "Soft-revokes a key. The key becomes instantly invalid but its record is preserved."
+          }
+        },
+        {
+          "name": "Re-activate a Key (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "x-api-key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/keys/KEY_ID_HERE/activate",
+            "description": "Re-enables a previously revoked key. Requires wildcard scope."
+          }
+        }
+      ]
     },
     {
       "name": "Wallet",

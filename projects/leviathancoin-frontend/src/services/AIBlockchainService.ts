@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-
 /**
  * AI & Deep Learning Blockchain Integration
  * Frontend utility for interacting with AI models on blockchain
@@ -488,16 +486,6 @@ class DistributedMLService {
   }
 }
 
-export {
-  AIBlockchainService,
-  DistributedMLService,
-  InferenceRequest,
-  InferenceResult,
-  InferenceStatus,
-  ModelInfo,
-  ModelType,
-  NeuralNetworkConfig,
-  RLBlockchainService,
-  TrainingJob,
-  TrainingStatus,
-}
+export { AIBlockchainService, DistributedMLService, RLBlockchainService }
+
+export type { InferenceRequest, InferenceResult, InferenceStatus, ModelInfo, ModelType, NeuralNetworkConfig, TrainingJob, TrainingStatus }

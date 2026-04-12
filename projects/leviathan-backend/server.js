@@ -15,6 +15,11 @@ const bftController = require('./controllers/bftController');
 const stakingController = require('./controllers/stakingController');
 const daoController = require('./controllers/daoController');
 const infrastructureController = require('./controllers/infrastructureController');
+const apiKeyController = require('./controllers/apiKeyController');
+
+// Import auth middleware & key service bootstrap
+const { apiKeyAuth } = require('./middleware/apiKeyAuth');
+const { bootstrapMasterKey } = require('./services/apiKeyService');
 
 // Import BFT Consensus Service
 const BFTConsensusService = require('./services/bftConsensus');
@@ -71,18 +76,28 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
-app.use('/api/wallet', walletController);
-app.use('/api/token', tokenController);
-app.use('/api/nft', nftController);
-app.use('/api/mining', miningController);
-app.use('/api/bft', bftController);
-app.use('/api/infrastructure', infrastructureController);
+// ── API Key Management Routes (unprotected generate handled inside controller) ─
+app.use('/api/keys', apiKeyController);
+
+// ── Protected API Routes ─────────────────────────────────────────────────────
+// Each route is guarded by the required scope. A wildcard ('*') key bypasses
+// all scope checks. Clients must send: x-api-key: lv_live_...
+app.use('/api/wallet',         apiKeyAuth('wallet:read'),    walletController);
+app.use('/api/token',          apiKeyAuth('token:read'),     tokenController);
+app.use('/api/nft',            apiKeyAuth('nft:read'),       nftController);
+app.use('/api/mining',         apiKeyAuth('mining:read'),    miningController);
+app.use('/api/bft',            apiKeyAuth('bft:read'),       bftController);
+app.use('/api/infrastructure', apiKeyAuth('infra:read'),     infrastructureController);
+app.use('/api/staking',        apiKeyAuth('staking:read'),   stakingController);
+app.use('/api/dao',            apiKeyAuth('dao:read'),       daoController);
 
 // Initialize BFT Consensus Service
 const bftService = new BFTConsensusService(io);
 app.set('bftService', bftService);
 console.log('🔐 BFT Consensus Service initialized');
+
+// Bootstrap master API key (prints to console on first boot only)
+bootstrapMasterKey();
 
 // Initialize decentralized backend services
 const p2pService = new P2PService({ topicPrefix: '/kont' });
