@@ -53,6 +53,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/hardware-benchmark" element={<HardwareBenchmarkDashboard />} />
             <Route path="/console/ws-qaoa" element={<WsQaoaConsole />} />
+            <Route path="/qaoa-simulator" element={<QaoaSimulator />} />
           </Routes>
         </Router>
       </WalletProvider>

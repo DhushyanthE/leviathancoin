@@ -36,6 +36,11 @@ const NavigationMenu: React.FC = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/qaoa-simulator" className={({ isActive }) => (isActive ? 'active' : '')}>
+              QAOA Simulator
+            </NavLink>
+          </li>
+          <li>
             <a href="/staking">Staking</a>
           </li>
         </ul>
