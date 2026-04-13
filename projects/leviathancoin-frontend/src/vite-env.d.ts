@@ -3,6 +3,9 @@
 interface ImportMetaEnv {
   readonly VITE_ENVIRONMENT: string
 
+  // Leviathan Backend API
+  readonly VITE_API_BASE_URL: string
+
   readonly VITE_ALGOD_TOKEN: string
   readonly VITE_ALGOD_SERVER: string
   readonly VITE_ALGOD_PORT: string

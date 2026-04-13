@@ -12,6 +12,8 @@ algokit-utils = "^4.0.0"
 python-dotenv = "^1.0.0"
 algorand-python = "^3"
 algorand-python-testing = "^1"
+numpy = "^2.4.4"
+scipy = "^1.17.1"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.1.0"

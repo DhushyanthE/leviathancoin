@@ -2,6 +2,7 @@
 import { useWallet } from '@txnlab/use-wallet-react'
 import React, { useState } from 'react'
 import AppCalls from './components/AppCalls'
+import ApiKeyManager from './components/ApiKeyManager'
 import BFTDashboard from './components/BFTDashboard'
 import ConnectWallet from './components/ConnectWallet'
 import LeviathanToken from './components/LeviathanToken'
@@ -19,6 +20,7 @@ const Home: React.FC<HomeProps> = () => {
   const [web3StorageModal, setWeb3StorageModal] = useState<boolean>(false)
   const [bftDashboardModal, setBftDashboardModal] = useState<boolean>(false)
   const [stakingModal, setStakingModal] = useState<boolean>(false)
+  const [apiKeyModal, setApiKeyModal] = useState<boolean>(false)
   const { activeAddress } = useWallet()
 
   const toggleWalletModal = () => {
@@ -96,6 +98,10 @@ const Home: React.FC<HomeProps> = () => {
             <button data-test-id="bft-dashboard" className="btn btn-accent m-2" onClick={toggleBFTDashboardModal}>
               🔐 BFT Consensus Dashboard
             </button>
+
+            <button data-test-id="api-key-manager" className="btn btn-warning m-2" onClick={() => setApiKeyModal(true)}>
+              🗝️ API Key Manager
+            </button>
           </div>
 
           <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
@@ -103,6 +109,17 @@ const Home: React.FC<HomeProps> = () => {
           <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
           <LeviathanToken openModal={leviathanTokenModal} setModalState={setLeviathanTokenModal} />
           <StakingPanel openModal={stakingModal} setModalState={setStakingModal} />
+
+          {apiKeyModal && (
+            <dialog className="modal modal-open">
+              <div className="modal-box max-w-3xl p-0 overflow-hidden">
+                <ApiKeyManager closeModal={() => setApiKeyModal(false)} />
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button onClick={() => setApiKeyModal(false)}>close</button>
+              </form>
+            </dialog>
+          )}
 
           {web3StorageModal && (
             <dialog className="modal modal-open">
